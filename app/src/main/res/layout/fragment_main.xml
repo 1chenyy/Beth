@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.chen.beth.MainFragment" />
+
+        <variable
+            name="mainTopViewModel"
+            type="com.chen.beth.MainTopViewModel" />
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/main_linearlayout_bg"
+                android:orientation="vertical"
+                android:translationZ="6dp">
+
+                <com.chen.beth.UI.MainTopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{(view) -> handler.onClickTopView(view,handler.TAG_PRICE)}"
+                    app:content="@{mainTopViewModel.ethPrice}"
+                    app:imageSrc="@{@drawable/ic_ethereum_price}"
+                    app:refresh="@{mainTopViewModel.ethPrice.equals(@string/main_top_no_data)}"
+                    app:title="@{@string/main_top_eth_price_title}"
+                    app:stringTag="@{handler.TAG_PRICE}"/>
+
+                <com.chen.beth.UI.MainTopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{(view) -> handler.onClickTopView(view,handler.TAG_MKTCAP)}"
+                    app:content="@{mainTopViewModel.ethMarketCap}"
+                    app:imageSrc="@{@drawable/ic_ethereum_market_value}"
+                    app:refresh="@{mainTopViewModel.ethPrice.equals(@string/main_top_no_data)}"
+                    app:title="@{@string/main_top_eth_market_title}" />
+
+                <com.chen.beth.UI.MainTopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{(view) -> handler.onClickTopView(view,handler.TAG_LATEST)}"
+                    app:content="@{mainTopViewModel.ethLatestBlock}"
+                    app:imageSrc="@{@drawable/ic_eth_latest}"
+                    app:refresh="@{mainTopViewModel.ethPrice.equals(@string/main_top_no_data)}"
+                    app:title="@{@string/main_top_latest_block_title}" />
+
+                <com.chen.beth.UI.MainTopView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{(view) -> handler.onClickTopView(view,handler.TAG_DIFFICULTY)}"
+                    app:content="@{mainTopViewModel.ethDifficulty}"
+                    app:imageSrc="@{@drawable/ic_eth_difficulty}"
+                    app:refresh="@{mainTopViewModel.ethPrice.equals(@string/main_top_no_data)}"
+                    app:title="@{@string/main_top_difficulty_title}" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_latest_blocks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:translationZ="6dp" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>
