@@ -17,4 +17,5 @@
     <string name="name_block_sync">区块同步</string>
     <string name="name_block_sync_desc">区块信息同步服务</string>
     <string name="main_top_no_data">暂无数据</string>
+    <string name="main_top_no_network">没有网络连接</string>
 </resources>

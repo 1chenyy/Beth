@@ -29,6 +29,7 @@
     <string name="main_top_no_data">No Data</string>
     <string name="action_mtv_refresh" translatable="false">com.chen.beth.mtv_refresh</string>
     <string name="extra_type" translatable="false">type</string>
+    <string name="main_top_no_network">No network connection detected</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

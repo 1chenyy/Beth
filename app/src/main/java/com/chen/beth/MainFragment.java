@@ -60,8 +60,9 @@ public class MainFragment extends Fragment {
         viewModel = ViewModelProviders.
                 of(this,new MainTopViewModel.Factory(BethApplication.getContext())).get(MainTopViewModel.class);
         binding.setLifecycleOwner(this);
-        binding.setMainTopViewModel(viewModel);
+        binding.setViewmodel(viewModel);
         binding.setHandler(this);
+
         return binding.getRoot();
     }
 
@@ -104,26 +105,45 @@ public class MainFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void onPriceEvent(PriceAndMktcapBean bean){
-        if (bean.status == 0){
-            viewModel.ethPrice.setValue(getString(R.string.main_top_no_data));
-            viewModel.ethMarketCap.setValue(getString(R.string.main_top_no_data));
-        }else{
-            LogUtil.d(this.getClass(),"接收到最新价格与市值消息，准备更新："+bean.result.price+"  "+bean.result.mktcap);
-            viewModel.ethPrice.setValue("$ "+bean.result.price);
-            viewModel.ethMarketCap.setValue("$ "+bean.result.mktcap);
+        String price = "",mktcap = "";
+        switch (bean.status){
+            case Const.RESULT_NORMAL:
+                price = "$ "+bean.result.price;
+                mktcap = "$ "+bean.result.mktcap;
+                break;
+            case Const.RESULT_NO_DATA:
+                price = getString(R.string.main_top_no_data);
+                mktcap = getString(R.string.main_top_no_data);
+                break;
+            case Const.RESULT_NO_NET:
+                price = getString(R.string.main_top_no_network);
+                mktcap = getString(R.string.main_top_no_network);
+                break;
         }
+        viewModel.ethPrice.setValue(price);
+        viewModel.ethMarketCap.setValue(mktcap);
 
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void onLatestBlockEvent(LatestBlockBean bean){
-        if (bean.status == 0){
-            viewModel.ethLatestBlock.setValue(getString(R.string.main_top_no_data));
-            viewModel.ethDifficulty.setValue(getString(R.string.main_top_no_data));
-        }else{
-            viewModel.ethLatestBlock.setValue(bean.result.number+"");
-            viewModel.ethDifficulty.setValue(bean.result.total_difficult);
+        String latest = "",difficult = "";
+        switch (bean.status){
+            case Const.RESULT_NORMAL:
+                latest = bean.result.number+"";
+                difficult = bean.result.total_difficult;
+                break;
+            case Const.RESULT_NO_DATA:
+                latest = getString(R.string.main_top_no_data);
+                difficult = getString(R.string.main_top_no_data);
+                break;
+            case Const.RESULT_NO_NET:
+                latest = getString(R.string.main_top_no_network);
+                difficult = getString(R.string.main_top_no_network);
+                break;
         }
+        viewModel.ethLatestBlock.setValue(latest);
+        viewModel.ethDifficulty.setValue(difficult);
     }
 
     @Override
@@ -144,19 +164,13 @@ public class MainFragment extends Fragment {
 
     }
 
-    public void onClickTopView(View view,String s){
-        switch (s){
-            case TAG_PRICE:
-                break;
-            case TAG_MKTCAP:
-                break;
-            case TAG_LATEST:
-                break;
-            case TAG_DIFFICULTY:
-                break;
-        }
-        BaseUtil.showToast(s);
+    public void onClickTopView(View view){
+
+        BaseUtil.showToast("aaa");
     }
 
+    public void onClickRefresh(View view){
 
+        BaseUtil.showToast("bbb");
+    }
 }

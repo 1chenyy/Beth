@@ -20,21 +20,19 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 import retrofit2.Response;
 
-public class QueryPriceWorker extends Worker {
-
-    public QueryPriceWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
-        super(context, workerParams);
-    }
-
-    @NonNull
+public class QueryPriceTask implements Runnable {
     @Override
-    public Result doWork() {
-        if (!isStopped()){
+    public void run() {
+        LogUtil.d(this.getClass(),"开始获取价格与市值");
+        if (BaseUtil.isConnected()){
             RetrofitManager.getAPIServices().getPriceAndMketcap().
                     subscribe(p->handleSucceed(p),
                             t->handleFailed(t));
+        }else{
+            PriceAndMktcapBean event = new PriceAndMktcapBean();
+            event.status = -1;
+            BaseUtil.RemoveAndSendStickEvent(event);
         }
-        return Result.success();
     }
 
     private void handleSucceed(PriceAndMktcapBean priceAndMktcapBean){
@@ -60,4 +58,6 @@ public class QueryPriceWorker extends Worker {
         event.status = 0;
         BaseUtil.RemoveAndSendStickEvent(event);
     }
+
+
 }

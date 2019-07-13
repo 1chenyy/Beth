@@ -1,39 +1,35 @@
 package com.chen.beth.BindAdapter;
 
-import android.graphics.drawable.Drawable;
+import android.animation.ValueAnimator;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
-import com.chen.beth.UI.MainTopView;
-
 public class MainTopViewBindAdapter {
-    @BindingAdapter("imageSrc")
-    public static void setImage(MainTopView view, Drawable src){
-        view.setImage(src);
-    }
-
-    @BindingAdapter("title")
-    public static void setTitle(MainTopView view, String title){
-        view.setTitle(title);
-    }
 
     @BindingAdapter("content")
-    public static void setContent(MainTopView view, String content){
-        view.setContent(content);
+    public static void setContent(TextView view, String content){
+        if (content.equals(view.getText()))
+            return;
+        ValueAnimator contentAnimator = ValueAnimator.ofFloat(1,0,1).setDuration(800);
+        contentAnimator.addUpdateListener(a->{
+            float value = (float) a.getAnimatedValue();
+            if (value < 0.5 && !content.equals(view.getText())){
+                view.setText(content);
+            }
+            view.setAlpha(value);
+        });
+        contentAnimator.start();
+
     }
 
-    @BindingAdapter("line")
-    public static void showLine(MainTopView view, boolean isShow){
-        view.showLine(isShow);
+    @BindingAdapter("isShow")
+    public static void showRefresh(ImageButton view, boolean isShow){
+        view.clearAnimation();
+        view.setEnabled(true);
+        view.setVisibility(isShow? View.VISIBLE:View.GONE);
     }
 
-    @BindingAdapter("refresh")
-    public static void showRefresh(MainTopView view, boolean isShow){
-        view.showRefresh(isShow);
-    }
-
-    @BindingAdapter("stringTag")
-    public static void setStringTag(MainTopView view, String tag){
-        view.setStringTag(tag);
-    }
 }

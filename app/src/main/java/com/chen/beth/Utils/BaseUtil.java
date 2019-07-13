@@ -26,6 +26,9 @@ public class BaseUtil {
     public static final float SCREEN_DENSITY = METRICS.density;
     public static final float SCREEN_WIDTH = METRICS.widthPixels;
     public static final float SCREEN_HEIGHT = METRICS.heightPixels;
+    public static final ConnectivityManager CONNECTIVITY_MANAGER = ((ConnectivityManager) BethApplication.getContext().getSystemService(
+            Context.CONNECTIVITY_SERVICE));
+
 
     public static boolean isRunOnUiThread(){
         return BethApplication.getMainThread() == android.os.Process.myTid();
@@ -59,6 +62,10 @@ public class BaseUtil {
         return BethApplication.getContext().getString(res);
     }
 
+    public static Drawable getDrawable(int res){
+        return  BethApplication.getContext().getDrawable(res);
+    }
+
     public static int dpToPx(float value){
         return (int) (value*SCREEN_DENSITY+0.5f);
     }
@@ -68,9 +75,7 @@ public class BaseUtil {
     }
 
     public static NetworkInfo.State getCurrentNetworkState() {
-        NetworkInfo networkInfo
-                = ((ConnectivityManager) BethApplication.getContext().getSystemService(
-                Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        NetworkInfo networkInfo = CONNECTIVITY_MANAGER.getActiveNetworkInfo();
         return networkInfo != null ? networkInfo.getState() : null;
     }
 

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.chen.beth.MainFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.chen.beth.MainTopViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_price"
+            style="@style/MainTopViewRLStyle"
+            android:onClick="@{handler::onClickTopView}">
+
+            <ImageView
+                android:id="@+id/iv_price"
+                style="@style/MainTopViewImageViewStyle"
+                android:src="@drawable/ic_ethereum_price" />
+
+            <TextView
+                android:id="@+id/tv_price_title"
+                style="@style/MainTopViewTitleTextViewStyle"
+                android:layout_toRightOf="@id/iv_price"
+                android:text="@string/main_top_eth_price_title" />
+
+            <TextView
+                android:id="@+id/tv_price_content"
+                style="@style/MainTopViewContentTextViewStyle"
+                android:layout_below="@id/tv_price_title"
+                android:layout_toRightOf="@id/iv_price"
+                app:content="@{viewmodel.ethPrice}" />
+
+            <ImageButton
+                android:id="@+id/ib_price_refresh"
+                style="@style/MainTopViewImageButtonStyle"
+                app:isShow="@{viewmodel.ethPrice.equals(@string/main_top_no_data)||viewmodel.ethPrice.equals(@string/main_top_no_network)}" />
+
+            <View
+                style="@style/MainTopViewLineStyle"
+                android:layout_below="@id/iv_price" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_mktcap"
+            style="@style/MainTopViewRLStyle"
+            android:onClick="@{handler::onClickTopView}">
+
+            <ImageView
+                android:id="@+id/iv_mktcap"
+                style="@style/MainTopViewImageViewStyle"
+                android:src="@drawable/ic_ethereum_market_value" />
+
+            <TextView
+                android:id="@+id/tv_mktcap_title"
+                style="@style/MainTopViewTitleTextViewStyle"
+                android:layout_toRightOf="@id/iv_mktcap"
+                android:text="@string/main_top_eth_market_title" />
+
+            <TextView
+                android:id="@+id/tv_mktcap_content"
+                style="@style/MainTopViewContentTextViewStyle"
+                android:layout_below="@id/tv_mktcap_title"
+                android:layout_toRightOf="@id/iv_mktcap"
+                app:content="@{viewmodel.ethMarketCap}" />
+
+            <ImageButton
+                android:id="@+id/ib_mktcap_refresh"
+                style="@style/MainTopViewImageButtonStyle"
+                app:isShow="@{viewmodel.ethMarketCap.equals(@string/main_top_no_data)||viewmodel.ethMarketCap.equals(@string/main_top_no_network)}" />
+
+            <View
+                style="@style/MainTopViewLineStyle"
+                android:layout_below="@id/iv_mktcap" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_latest"
+            style="@style/MainTopViewRLStyle"
+            android:onClick="@{handler::onClickTopView}">
+
+            <ImageView
+                android:id="@+id/iv_latest"
+                style="@style/MainTopViewImageViewStyle"
+                android:src="@drawable/ic_eth_latest" />
+
+            <TextView
+                android:id="@+id/tv_latest_title"
+                style="@style/MainTopViewTitleTextViewStyle"
+                android:layout_toRightOf="@id/iv_latest"
+                android:text="@string/main_top_latest_block_title" />
+
+            <TextView
+                android:id="@+id/tv_latest_content"
+                style="@style/MainTopViewContentTextViewStyle"
+                android:layout_below="@id/tv_latest_title"
+                android:layout_toRightOf="@id/iv_latest"
+                app:content="@{viewmodel.ethLatestBlock}" />
+
+            <ImageButton
+                android:id="@+id/ib_latest_refresh"
+                style="@style/MainTopViewImageButtonStyle"
+                app:isShow="@{viewmodel.ethLatestBlock.equals(@string/main_top_no_data)||viewmodel.ethLatestBlock.equals(@string/main_top_no_network)}" />
+
+            <View
+                style="@style/MainTopViewLineStyle"
+                android:layout_below="@id/iv_latest" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_top_difficulty"
+            style="@style/MainTopViewRLStyle"
+            android:onClick="@{handler::onClickTopView}">
+
+            <ImageView
+                android:id="@+id/iv_difficulty"
+                style="@style/MainTopViewImageViewStyle"
+                android:src="@drawable/ic_eth_difficulty" />
+
+            <TextView
+                android:id="@+id/tv_difficulty_title"
+                style="@style/MainTopViewTitleTextViewStyle"
+                android:layout_toRightOf="@id/iv_difficulty"
+                android:text="@string/main_top_difficulty_title" />
+
+            <TextView
+                android:id="@+id/tv_difficulty_content"
+                style="@style/MainTopViewContentTextViewStyle"
+                android:layout_below="@id/tv_difficulty_title"
+                android:layout_toRightOf="@id/iv_difficulty"
+                app:content="@{viewmodel.ethDifficulty}" />
+
+            <ImageButton
+                android:id="@+id/ib_difficulty_refresh"
+                style="@style/MainTopViewImageButtonStyle"
+                app:isShow="@{viewmodel.ethDifficulty.equals(@string/main_top_no_data)||viewmodel.ethDifficulty.equals(@string/main_top_no_network)}" />
+
+            <View
+                style="@style/MainTopViewLineStyle"
+                android:layout_below="@id/iv_difficulty" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>
