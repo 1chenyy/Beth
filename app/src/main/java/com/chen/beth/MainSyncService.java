@@ -2,11 +2,14 @@ package com.chen.beth;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 
+import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.UI.NotificationHelper;
+import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.QueryLatestBlockTask;
 import com.chen.beth.Worker.QueryPriceTask;
 import com.chen.beth.models.LatestBlockBean;
@@ -16,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,10 +29,8 @@ import static com.chen.beth.UI.NotificationHelper.FOREGROUND_SERVICE_ID;
 
 public class MainSyncService extends Service {
     private NotificationHelper notificationHelper ;
-    private ScheduledExecutorService periodicPriceQueryService;
-    private ScheduledExecutorService periodicLatestBlockQueryService;
+    private ScheduledExecutorService executorService;
     private Timer periodicLatestBlockTimer;
-    private boolean isPriceQueryRunning = false;
 
     public MainSyncService() {
     }
@@ -38,34 +40,36 @@ public class MainSyncService extends Service {
         EventBus.getDefault().register(this);
         LogUtil.d(this.getClass(),"MainSyncService Start !");
         configForegroundService();
+        executorService = Executors.newScheduledThreadPool(3);
         startQueryPrice();
         startQueryLatestBlock();
+        //startQueryTransactionHistory();
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void startQueryLatestBlock() {
-        periodicLatestBlockQueryService = Executors.newScheduledThreadPool(2);
-        QueryLatestBlockTask queryLatestBlockTask = new QueryLatestBlockTask();
-        periodicLatestBlockQueryService.scheduleAtFixedRate(queryLatestBlockTask,0,5,TimeUnit.SECONDS);
+    private void startQueryTransactionHistory() {
+        String now = Const.SDF.format(new Date());
+        if (now.equals(PreferenceUtil.getString(Const.KEY_HISTORY_DATE,""))){
+
+        }else{
+
+        }
     }
 
-    private void stopQueryLatestBlock(){
-        periodicLatestBlockQueryService.shutdownNow();
+    private void startQueryLatestBlock() {
+        QueryLatestBlockTask queryLatestBlockTask = new QueryLatestBlockTask();
+        executorService.scheduleAtFixedRate(queryLatestBlockTask,0,5,TimeUnit.SECONDS);
     }
+
+
 
     private void startQueryPrice() {
         LogUtil.d(this.getClass(),"开始周期性查询价格和市值");
-        periodicPriceQueryService = Executors.newScheduledThreadPool(2);
         QueryPriceTask queryPriceTask = new QueryPriceTask();
-        periodicPriceQueryService.scheduleAtFixedRate(queryPriceTask,0,15, TimeUnit.MINUTES);
-        isPriceQueryRunning = true;
+        executorService.scheduleAtFixedRate(queryPriceTask,0,15, TimeUnit.MINUTES);
     }
 
-    private void stopQueryPrice(){
-        LogUtil.d(this.getClass(),"停止周期性查询价格和市值");
-        periodicPriceQueryService.shutdownNow();
-        isPriceQueryRunning = false;
-    }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -117,8 +121,7 @@ public class MainSyncService extends Service {
     public void onDestroy() {
         super.onDestroy();
         stopForeground(true);
-        stopQueryPrice();
-        stopQueryLatestBlock();
+        executorService.shutdownNow();
         EventBus.getDefault().unregister(this);
     }
 }

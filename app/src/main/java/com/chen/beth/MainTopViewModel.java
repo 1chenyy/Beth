@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.chen.beth.Utils.BaseUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainTopViewModel extends ViewModel {
     public MutableLiveData<String> ethPrice  = new MutableLiveData<>();
     public MutableLiveData<String> ethMarketCap  = new MutableLiveData<>();
     public MutableLiveData<String> ethLatestBlock = new MutableLiveData<>();
     public MutableLiveData<String> ethDifficulty = new MutableLiveData<>();
-    public MutableLiveData<String[]> titleString = new MutableLiveData<>();
-    public MutableLiveData<Drawable[]> titleSrc = new MutableLiveData<>();
+    public MutableLiveData<List<Integer>> txHistory = new MutableLiveData<>();
 
     public MainTopViewModel(Context context){
         String loading = context.getString(R.string.main_top_loading);
@@ -26,17 +26,10 @@ public class MainTopViewModel extends ViewModel {
         ethMarketCap.setValue(loading);
         ethLatestBlock.setValue(loading);
         ethDifficulty.setValue(loading);
-        titleString.setValue(new String[]{
-                BaseUtil.getString(R.string.main_top_eth_price_title),
-                BaseUtil.getString(R.string.main_top_eth_market_title),
-                BaseUtil.getString(R.string.main_top_latest_block_title),
-                BaseUtil.getString(R.string.main_top_difficulty_title)});
-        titleSrc.setValue(new Drawable[]{
-                BaseUtil.getDrawable(R.drawable.ic_ethereum_price),
-                BaseUtil.getDrawable(R.drawable.ic_ethereum_market_value),
-                BaseUtil.getDrawable(R.drawable.ic_eth_latest),
-                BaseUtil.getDrawable(R.drawable.ic_eth_difficulty),
-        });
+        ArrayList<Integer> historyList = new ArrayList<>();
+        for (int i = 0;i<15;i++)
+            historyList.add(0);
+        txHistory.setValue(historyList);
     }
 
     public static class Factory implements ViewModelProvider.Factory{

@@ -20,11 +20,9 @@ public class QueryLatestBlockTask implements Runnable {
             }
         }
         if (BaseUtil.isConnected()){
-            EventBus.getDefault().post(NetState.CONNECTED);
             RetrofitManager.getAPIServices().getLatestBlock()
                     .subscribe(l->handleSucceed(l),t->handleFailed(t));
         }else{
-            EventBus.getDefault().post(NetState.DISCONNECTED);
             LatestBlockBean event = new LatestBlockBean();
             event.status = -1;
             BaseUtil.RemoveAndSendStickEvent(event);

@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class BaseUtil {
     private static Toast toast = null;
@@ -121,5 +123,23 @@ public class BaseUtil {
     public static int getRemainTime(){
         Calendar now  =Calendar.getInstance();
         return (23-now.get(Calendar.HOUR_OF_DAY))*3600 + (59-now.get(Calendar.MINUTE))*60 + (59-now.get(Calendar.SECOND));
+    }
+
+    public static String ListToString(List<Integer> list){
+        StringBuilder sb = new StringBuilder();
+        for (Integer i : list){
+            sb.append(i);
+            sb.append("-");
+        }
+        return sb.toString();
+    }
+
+    public static List<Integer> StringToList(String s){
+        String[] strs = s.split("-");
+        List<Integer> list = new ArrayList<>();
+        for(String str:strs){
+            list.add(Integer.parseInt(str));
+        }
+        return list;
     }
 }

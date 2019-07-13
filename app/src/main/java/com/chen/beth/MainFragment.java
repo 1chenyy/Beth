@@ -20,6 +20,7 @@ import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.broadcast.RefreshReceiver;
 import com.chen.beth.databinding.FragmentMainBinding;
+import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
 import com.github.mikephil.charting.data.Entry;
@@ -50,8 +51,6 @@ public class MainFragment extends Fragment {
 
     public MainFragment() {
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -144,6 +143,11 @@ public class MainFragment extends Fragment {
         }
         viewModel.ethLatestBlock.setValue(latest);
         viewModel.ethDifficulty.setValue(difficult);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    public void onTransactionHistoryEvent(HistoryTransactionBean bean){
+
     }
 
     @Override

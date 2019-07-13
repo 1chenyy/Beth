@@ -8,6 +8,11 @@ public class PreferenceUtil {
     public static String PREFERENCE_NAME = "BethData";
     public static final String IS_FIRST_RUN = "isFirstRun";
 
+    public static boolean hasKey(String key){
+        return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+                .contains(key);
+    }
+
     public static boolean putBoolean(String key,boolean value){
         return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
                 .edit().putBoolean(key,value).commit();
@@ -28,14 +33,14 @@ public class PreferenceUtil {
                 .getInt(key,defValue);
     }
 
-    public static boolean putLong(String key,long value){
+    public static boolean putString(String key,String value){
         return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
-                .edit().putLong(key,value).commit();
+                .edit().putString(key,value).commit();
     }
 
-    public static long getLong(String key,int defValue){
+    public static String getString(String key,String defValue){
         return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
-                .getLong(key,defValue);
+                .getString(key,defValue);
     }
 
 
