@@ -1,12 +1,9 @@
-package com.chen.beth.Utils;
+package com.chen.beth.utils;
 
 import android.util.Log;
 
-import com.chen.beth.BethApplication;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class LogUtil {
     private static final String TAG = "Beth";

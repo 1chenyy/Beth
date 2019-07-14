@@ -5,41 +5,39 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chen.beth.UI.TransactionAndPriceMarker;
-import com.chen.beth.Utils.BaseUtil;
-import com.chen.beth.Utils.Const;
-import com.chen.beth.Utils.LogUtil;
+import com.chen.beth.adapter.LatestBlockAdapter;
+import com.chen.beth.ui.TransactionAndPriceMarker;
+import com.chen.beth.utils.BaseUtil;
+import com.chen.beth.utils.Const;
+import com.chen.beth.utils.LogUtil;
 import com.chen.beth.broadcast.RefreshReceiver;
 import com.chen.beth.databinding.FragmentMainBinding;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
-import com.github.mikephil.charting.animation.Easing;
+import com.chen.beth.viewModel.ItemLatestBlockViewModel;
+import com.chen.beth.viewModel.MainTopViewModel;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 
 /**
@@ -49,6 +47,8 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private MainTopViewModel viewModel;
     private RefreshReceiver refreshReceiver;
+    private ArrayList<ItemLatestBlockViewModel> list;
+    private LatestBlockAdapter adapter;
 
     public static final String TAG_PRICE = "price";
     public static final String TAG_MKTCAP = "mktcap";
@@ -68,7 +68,18 @@ public class MainFragment extends Fragment {
         binding.setViewmodel(viewModel);
         binding.setHandler(this);
         configChart();
+        configRecycleView();
         return binding.getRoot();
+    }
+
+    private void configRecycleView() {
+        RecyclerView rv = binding.rvLatestBlocks;
+        rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        list = new ArrayList<>();
+        adapter = new LatestBlockAdapter(list);
+        rv.setAdapter(adapter);
     }
 
     private void configChart() {

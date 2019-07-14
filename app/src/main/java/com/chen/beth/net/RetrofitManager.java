@@ -1,6 +1,6 @@
 package com.chen.beth.net;
 
-import com.chen.beth.Utils.Const;
+import com.chen.beth.utils.Const;
 
 import java.util.concurrent.TimeUnit;
 

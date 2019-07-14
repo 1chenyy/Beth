@@ -1,4 +1,4 @@
-package com.chen.beth.BindAdapter;
+package com.chen.beth.bindAdapter;
 
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -8,10 +8,7 @@ import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
-import com.chen.beth.BethApplication;
-import com.chen.beth.R;
-import com.chen.beth.UI.TransactionAndPriceMarker;
-import com.chen.beth.Utils.Const;
+import com.chen.beth.utils.Const;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,10 +18,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 public class MainFragmentBindAdapter {

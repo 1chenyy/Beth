@@ -10,10 +10,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
-import com.chen.beth.Utils.BaseUtil;
+import com.chen.beth.utils.BaseUtil;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;

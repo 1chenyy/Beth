@@ -1,5 +1,6 @@
 package com.chen.beth.net;
 
+import com.chen.beth.models.BlockBundleBean;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
@@ -18,4 +19,7 @@ public interface APIServices {
 
     @GET("gettransactionsstatistic")
     Maybe<HistoryTransactionBean> getHistoryTransaction();
+
+    @GET("getlatest15blocks")
+    Maybe<BlockBundleBean> getLatest15Blocks();
 }

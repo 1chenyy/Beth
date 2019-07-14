@@ -1,11 +1,10 @@
-package com.chen.beth.UI;
+package com.chen.beth.ui;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.chen.beth.R;
-import com.chen.beth.Utils.Const;
+import com.chen.beth.utils.Const;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;

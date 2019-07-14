@@ -1,12 +1,10 @@
-package com.chen.beth.Worker;
+package com.chen.beth.worker;
 
-import com.chen.beth.Utils.BaseUtil;
-import com.chen.beth.Utils.LogUtil;
+import com.chen.beth.utils.BaseUtil;
+import com.chen.beth.utils.LogUtil;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.NetState;
 import com.chen.beth.net.RetrofitManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class QueryLatestBlockTask implements Runnable {
     private static NetState state = NetState.NONE;

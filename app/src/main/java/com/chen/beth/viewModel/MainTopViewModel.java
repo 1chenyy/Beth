@@ -1,14 +1,13 @@
-package com.chen.beth;
+package com.chen.beth.viewModel;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.chen.beth.Utils.BaseUtil;
+import com.chen.beth.R;
 
 import java.util.ArrayList;
 import java.util.List;

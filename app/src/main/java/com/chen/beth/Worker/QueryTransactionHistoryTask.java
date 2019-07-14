@@ -1,11 +1,10 @@
-package com.chen.beth.Worker;
+package com.chen.beth.worker;
 
-import com.chen.beth.Utils.BaseUtil;
-import com.chen.beth.Utils.Const;
-import com.chen.beth.Utils.LogUtil;
-import com.chen.beth.Utils.PreferenceUtil;
+import com.chen.beth.utils.BaseUtil;
+import com.chen.beth.utils.Const;
+import com.chen.beth.utils.LogUtil;
+import com.chen.beth.utils.PreferenceUtil;
 import com.chen.beth.models.HistoryTransactionBean;
-import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.net.RetrofitManager;
 
 import java.util.List;

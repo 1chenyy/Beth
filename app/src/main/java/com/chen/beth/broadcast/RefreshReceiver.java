@@ -6,9 +6,7 @@ import android.content.Intent;
 
 import com.chen.beth.MainFragment;
 import com.chen.beth.R;
-import com.chen.beth.Utils.BaseUtil;
-import com.chen.beth.Utils.Const;
-import com.chen.beth.Utils.LogUtil;
+import com.chen.beth.utils.BaseUtil;
 
 public class RefreshReceiver extends BroadcastReceiver {
 

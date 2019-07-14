@@ -1,4 +1,4 @@
-package com.chen.beth.UI;
+package com.chen.beth.ui;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat;
 import com.chen.beth.BethApplication;
 import com.chen.beth.MainActivity;
 import com.chen.beth.R;
-import com.chen.beth.Utils.BaseUtil;
+import com.chen.beth.utils.BaseUtil;
 
 public class NotificationHelper {
     public static final int FOREGROUND_SERVICE_ID = 2;

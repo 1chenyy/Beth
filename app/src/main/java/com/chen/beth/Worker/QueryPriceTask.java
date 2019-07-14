@@ -1,24 +1,11 @@
-package com.chen.beth.Worker;
+package com.chen.beth.worker;
 
-import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.work.RxWorker;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 
-import com.chen.beth.Utils.BaseUtil;
-import com.chen.beth.Utils.LogUtil;
+import com.chen.beth.utils.BaseUtil;
+import com.chen.beth.utils.LogUtil;
 import com.chen.beth.models.PriceAndMktcapBean;
 import com.chen.beth.net.RetrofitManager;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.IOException;
-
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
-import retrofit2.Response;
 
 public class QueryPriceTask implements Runnable {
     @Override

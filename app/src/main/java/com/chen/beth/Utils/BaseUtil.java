@@ -1,4 +1,4 @@
-package com.chen.beth.Utils;
+package com.chen.beth.utils;
 
 import android.app.ActivityManager;
 import android.app.NotificationChannel;
