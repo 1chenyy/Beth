@@ -18,4 +18,5 @@
     <string name="name_block_sync_desc">区块信息同步服务</string>
     <string name="main_top_no_data">暂无数据</string>
     <string name="main_top_no_network">没有网络连接</string>
+    <string name="transaction_chart_title">以太坊近期交易量</string>
 </resources>

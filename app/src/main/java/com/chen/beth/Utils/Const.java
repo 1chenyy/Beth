@@ -9,5 +9,6 @@ public class Const {
     public static final int RESULT_NO_NET = -1;
     public static final String KEY_HISTORY_DATE = "key_history_date";
     public static final String KEY_HISTORY_VALUE = "key_history_value";
-    public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    public static final SimpleDateFormat SDF_DAY = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat CHART_CHART_DATE = new SimpleDateFormat("M.dd");
 }

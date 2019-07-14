@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
@@ -12,6 +13,8 @@ import com.chen.beth.UI.NotificationHelper;
 import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.QueryLatestBlockTask;
 import com.chen.beth.Worker.QueryPriceTask;
+import com.chen.beth.Worker.QueryTransactionHistoryTask;
+import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
 
@@ -20,10 +23,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 
 import static com.chen.beth.UI.NotificationHelper.FOREGROUND_SERVICE_ID;
 
@@ -37,23 +43,37 @@ public class MainSyncService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        notificationHelper = new NotificationHelper();
         EventBus.getDefault().register(this);
         LogUtil.d(this.getClass(),"MainSyncService Start !");
         configForegroundService();
         executorService = Executors.newScheduledThreadPool(3);
         startQueryPrice();
         startQueryLatestBlock();
-        //startQueryTransactionHistory();
+        startQueryTransactionHistory();
         return super.onStartCommand(intent, flags, startId);
     }
 
     private void startQueryTransactionHistory() {
-        String now = Const.SDF.format(new Date());
-        if (now.equals(PreferenceUtil.getString(Const.KEY_HISTORY_DATE,""))){
-
+        String now = BaseUtil.getTodayString();
+        QueryTransactionHistoryTask queryTransactionHistoryTask = new QueryTransactionHistoryTask();
+        if (now.equals(PreferenceUtil.getString(Const.KEY_HISTORY_DATE,"")) &&
+                !TextUtils.isEmpty(PreferenceUtil.getString(Const.KEY_HISTORY_VALUE,""))){
+            List<Integer> number = BaseUtil.StringToList(PreferenceUtil.getString(Const.KEY_HISTORY_VALUE,""));
+            HistoryTransactionBean event = new HistoryTransactionBean();
+            event.status = 1;
+            event.result = new HistoryTransactionBean.ResultBean();
+            event.result.number = number;
+            BaseUtil.RemoveAndSendStickEvent(event);
         }else{
-
+            new Thread(){
+                @Override
+                public void run() {
+                    queryTransactionHistoryTask.run();
+                }
+            }.start();
         }
+        executorService.scheduleAtFixedRate(queryTransactionHistoryTask,BaseUtil.getRemainTime()+1,24*60*60,TimeUnit.SECONDS);
     }
 
     private void startQueryLatestBlock() {
@@ -78,7 +98,7 @@ public class MainSyncService extends Service {
 
 
     private void configForegroundService(){
-        notificationHelper = new NotificationHelper();
+
         startForeground(FOREGROUND_SERVICE_ID,
                 notificationHelper.getMainSyncNotification(getString(R.string.main_top_loading),getString(R.string.main_top_loading)));
     }

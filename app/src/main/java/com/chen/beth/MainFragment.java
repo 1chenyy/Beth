@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chen.beth.UI.TransactionAndPriceMarker;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
@@ -23,6 +24,11 @@ import com.chen.beth.databinding.FragmentMainBinding;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -61,46 +67,41 @@ public class MainFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setViewmodel(viewModel);
         binding.setHandler(this);
-
+        configChart();
         return binding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setChart();
+    private void configChart() {
+        LineChart chart = binding.chart;
+        chart.setTouchEnabled(true);
+        chart.setDragEnabled(false);
+        chart.setScaleEnabled(false);
+        chart.setPinchZoom(false);
+        chart.setDrawGridBackground(false);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
+
+        YAxis y = chart.getAxisLeft();
+        y.setTextColor(Color.BLACK);
+        y.setDrawGridLines(false);
+        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        y.setAxisLineColor(Color.TRANSPARENT);
+
+        XAxis x = chart.getXAxis();
+        x.setTextColor(Color.BLACK);
+        x.setDrawGridLines(false);
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+        x.setAxisLineColor(Color.TRANSPARENT);
+        x.setGranularity(1f);
+
+        TransactionAndPriceMarker marker = new TransactionAndPriceMarker(getContext(),R.layout.chart_marker_layout);
+        marker.setChartView(chart);
+        chart.setMarker(marker);
+        chart.animateX(1000);
+        chart.invalidate();
     }
 
-    private void setChart() {
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0,900));
-        entries.add(new Entry(1,800));
-        entries.add(new Entry(2,1123));
-        entries.add(new Entry(3,650));
-        entries.add(new Entry(4,950));
-        entries.add(new Entry(5,1320));
-        entries.add(new Entry(6,1000));
-        entries.add(new Entry(7,856));
-        entries.add(new Entry(8,745));
-        entries.add(new Entry(9,513));
-        entries.add(new Entry(10,635));
-        entries.add(new Entry(11,985));
-        entries.add(new Entry(12,1341));
-        entries.add(new Entry(13,1110));
-        entries.add(new Entry(14,1023));
-        entries.add(new Entry(15,1560));
-        LineDataSet dataSet = new LineDataSet(entries,"label");
-        dataSet.setColor(Color.BLACK);
-        LineData data = new LineData(dataSet);
-        binding.chart.setData(data);
-        binding.chart.invalidate();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void onPriceEvent(PriceAndMktcapBean bean){
@@ -147,7 +148,8 @@ public class MainFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void onTransactionHistoryEvent(HistoryTransactionBean bean){
-
+        LogUtil.d(this.getClass(),BaseUtil.ListToString(bean.result.number));
+        viewModel.txHistory.setValue(bean.result.number);
     }
 
     @Override

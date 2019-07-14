@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class BaseUtil {
@@ -141,5 +141,9 @@ public class BaseUtil {
             list.add(Integer.parseInt(str));
         }
         return list;
+    }
+
+    public static String getTodayString(){
+        return Const.SDF_DAY.format(new Date());
     }
 }

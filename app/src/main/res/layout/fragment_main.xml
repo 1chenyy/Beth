@@ -32,17 +32,29 @@
                 android:background="@drawable/main_linearlayout_bg"
                 android:orientation="vertical"
                 android:translationZ="6dp">
+
                 <include
                     android:id="@+id/main_top"
                     layout="@layout/main_top_layout"
-                    app:viewmodel="@{viewmodel}"
                     app:handler="@{handler}"
-                    />
+                    app:viewmodel="@{viewmodel}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#7F7F7F"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/transaction_chart_title"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
-                    android:layout_height="130dp" />
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:drawChart="@{viewmodel.txHistory}"/>
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
