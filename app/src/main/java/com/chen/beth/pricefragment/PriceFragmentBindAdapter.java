@@ -1,14 +1,23 @@
 package com.chen.beth.pricefragment;
 
 import android.graphics.Color;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.chen.beth.BethApplication;
 import com.chen.beth.R;
+import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
+import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.models.LoadingState;
+import com.chen.beth.ui.CustomURLSpan;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -49,7 +58,12 @@ public class PriceFragmentBindAdapter {
                 return Const.CHART_CHART_DATE.format(calendar.getTime());
             }
         });
-
+        chart.getAxisLeft().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return "$ "+value;
+            }
+        });
         LineData data = new LineData(set);
         data.setDrawValues(false);
         chart.setData(data);
@@ -68,5 +82,15 @@ public class PriceFragmentBindAdapter {
                 break;
 
         }
+    }
+
+    @BindingAdapter({"setDataSourceName","setDataSourceWebsite"})
+    public static void setDataSource(TextView tv,String name,String website){
+        String prefix = BaseUtil.getString(R.string.data_source);
+        String data = prefix+name;
+        SpannableString spannableString = new SpannableString(prefix+name);
+        spannableString.setSpan(new CustomURLSpan(website), prefix.length(),data.length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(spannableString);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

@@ -144,6 +144,15 @@ public class BaseUtil {
         return sb.toString();
     }
 
+    public static String DoubleListToString(List<Double> list){
+        StringBuilder sb = new StringBuilder();
+        for (Double i : list){
+            sb.append(i);
+            sb.append("-");
+        }
+        return sb.toString();
+    }
+
     public static List<Integer> StringToIntList(String s){
         String[] strs = s.split("-");
         List<Integer> list = new ArrayList<>();
@@ -158,6 +167,15 @@ public class BaseUtil {
         List<Float> list = new ArrayList<>();
         for(String str:strs){
             list.add(Float.parseFloat(str));
+        }
+        return list;
+    }
+
+    public static List<Double> StringToDoubleList(String s){
+        String[] strs = s.split("-");
+        List<Double> list = new ArrayList<>();
+        for(String str:strs){
+            list.add(Double.parseDouble(str));
         }
         return list;
     }

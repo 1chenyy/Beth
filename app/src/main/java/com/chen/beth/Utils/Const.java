@@ -11,6 +11,8 @@ public class Const {
     public static final String KEY_HISTORY_TRANSACTION_VALUE = "key_history_transaction_value";
     public static final String KEY_HISTORY_PRICE_DATE = "key_history_price_date";
     public static final String KEY_HISTORY_PRICE_VALUE = "key_history_price_value";
+    public static final String KEY_MKTCAP_DATE = "key_mktcap_date";
+    public static final String KEY_MKTCAP_VALUE = "key_mktcap_value";
     public static final SimpleDateFormat SDF_DAY = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat SDF_DETAIL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat CHART_CHART_DATE = new SimpleDateFormat("M.dd");

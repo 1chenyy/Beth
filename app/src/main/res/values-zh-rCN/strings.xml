@@ -25,4 +25,11 @@
     <string name="block_info_miner">矿工：</string>
     <string name="block_info_txs_date">%1$d 个交易在 %2$s</string>
     <string name="price_history">以太币历史价格</string>
+    <string name="data_source">数据来源：</string>
+    <string name="eth_mketcap">以太币供应详情</string>
+    <string name="label_genesis">创世区块</string>
+    <string name="label_block">区块奖励</string>
+    <string name="label_uncle">叔块奖励</string>
+    <string name="label_total">总供应量</string>
+    <string name="ether">以太币</string>
 </resources>

@@ -8,15 +8,23 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.chen.beth.mainfragment.MainFragment"
-        android:label="fragment_main"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_priceFragment"
             app:destination="@id/priceFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mktcapFragment"
+            app:destination="@id/mktcapFragment" />
     </fragment>
     <fragment
         android:id="@+id/priceFragment"
         android:name="com.chen.beth.pricefragment.PriceFragment"
-        android:label="fragment_price"
+        android:label="@string/price_history"
         tools:layout="@layout/fragment_price" />
+    <fragment
+        android:id="@+id/mktcapFragment"
+        android:name="com.chen.beth.mktcapfragment.MktcapFragment"
+        android:label="@string/eth_mketcap"
+        tools:layout="@layout/fragment_mktcap" />
 </navigation>

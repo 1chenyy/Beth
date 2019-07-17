@@ -38,6 +38,19 @@
     <string name="block_info_txs_date">Transactions : %1$d , Date : %2$s</string>
     <string name="block_info_eth" translatable="false"> Eth</string>
     <string name="price_history">Historical price of Ether</string>
+    <string name="data_source">"The data source : "</string>
+    <string name="crypto_compare" translatable="false">CryptoCompare</string>
+    <string name="crypto_compare_website" translatable="false">https://www.cryptocompare.com/</string>
+    <string name="eth_mketcap">Ether supply details</string>
+    <string name="shared_element_price" translatable="false">price</string>
+    <string name="shared_element_mktcap" translatable="false">mktcap</string>
+    <string name="label_genesis">Genesis block</string>
+    <string name="label_block">Block reward</string>
+    <string name="label_uncle">UncleBlock reward</string>
+    <string name="ethio_api_name" translatable="false">Etherscan.io APIs</string>
+    <string name="ethio_api_website" translatable="false">https://etherscan.io/apis</string>
+    <string name="label_total">Total supply</string>
+    <string name="ether">Ether</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -1,6 +1,7 @@
 package com.chen.beth.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.chen.beth.BethApplication;
 
@@ -43,7 +44,15 @@ public class PreferenceUtil {
                 .getString(key,defValue);
     }
 
+    public static long getLong(String key,long defValue){
+        return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
+                .getLong(key,defValue);
+    }
 
+    public static SharedPreferences.Editor getEdit(){
+        return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
+                .edit();
+    }
 
     public static boolean isFirst(){
         return getBoolean(IS_FIRST_RUN,true);

@@ -28,7 +28,7 @@
                 android:id="@+id/iv_price"
                 style="@style/MainTopViewImageViewStyle"
                 android:src="@drawable/ic_ethereum_price"
-                android:transitionName="price" />
+                android:transitionName="@string/shared_element_price" />
 
             <TextView
                 android:id="@+id/tv_price_title"
@@ -62,6 +62,7 @@
             <ImageView
                 android:id="@+id/iv_mktcap"
                 style="@style/MainTopViewImageViewStyle"
+                android:transitionName="@string/shared_element_mktcap"
                 android:src="@drawable/ic_ethereum_market_value" />
 
             <TextView

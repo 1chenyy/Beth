@@ -225,11 +225,18 @@ public class MainFragment extends BaseFragment {
     }
 
     public void onClickTopView(View view){
+        FragmentNavigator.Extras extras;
         switch (view.getId()){
             case R.id.rl_price:
-                FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                        .addSharedElement(view.findViewById(R.id.iv_price),"price").build();
+                extras = new FragmentNavigator.Extras.Builder()
+                        .addSharedElement(view.findViewById(R.id.iv_price),getString(R.string.shared_element_price)).build();
                 Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_priceFragment,
+                        null,null,extras);
+                break;
+            case R.id.rl_mktcap:
+                extras = new FragmentNavigator.Extras.Builder()
+                        .addSharedElement(view.findViewById(R.id.iv_mktcap),getString(R.string.shared_element_mktcap)).build();
+                Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mktcapFragment,
                         null,null,extras);
                 break;
         }
