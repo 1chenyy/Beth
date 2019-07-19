@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.chen.beth.mktcapfragment.MktcapFragment" />
+
+        <variable
+            name="viewmodel"
+            type="com.chen.beth.mktcapfragment.MktcapViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:background="@drawable/main_linearlayout_bg"
+        android:translationZ="6dp"
+        tools:context=".mktcapfragment.MktcapFragment">
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_ethereum_market_value"
+            android:transitionName="@string/shared_element_mktcap"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:isShowContentView="@{viewmodel.loadingState}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:drawableLeft="@drawable/ic_icon_eth_18dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="@{viewmodel.gensis}"
+                android:textColor="#7F7F7F" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:drawableLeft="@drawable/ic_icon_eth_18dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="@{viewmodel.block}"
+                android:textColor="#7F7F7F" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:drawableLeft="@drawable/ic_icon_eth_18dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="@{viewmodel.uncle}"
+                android:textColor="#7F7F7F" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:drawableLeft="@drawable/ic_icon_eth_18dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="@{viewmodel.total}"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/eth_mketcap"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_main" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="8dp"
+            app:drawMktcapChart="@{viewmodel.charData}"
+            app:isShowContentView="@{viewmodel.loadingState}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv" />
+
+        <com.chen.beth.ui.ColorfulLoading
+            android:id="@+id/loading"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            app:isShowLoading="@{viewmodel.loadingState}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/primary_dark_ripple"
+            android:onClick="@{handler::onRefreshClick}"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:translationZ="6dp"
+            app:isShowRefreshBT="@{viewmodel.loadingState}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:isShowContentView="@{viewmodel.loadingState}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chart"
+            app:setDataSourceName="@{@string/ethio_api_name}"
+            app:setDataSourceWebsite="@{@string/ethio_api_website}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
