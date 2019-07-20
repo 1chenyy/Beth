@@ -195,12 +195,21 @@ public class BaseUtil {
         return Const.SDF_DETAIL.format(new Date(time*1000L));
     }
 
-    public static String omitMinerString(String miner){
+    public static String omitMinerString(String miner,int reserveLen){
+        String name = PreferenceUtil.getString(miner,"",PreferenceUtil.PREFERENCE_MINER_MARK);
+        if (!TextUtils.isEmpty(name)){
+            if (name.length()<=20){
+                return name;
+            }else{
+                return name.substring(0,20)+"...";
+            }
+
+        }
         //0x5a0b54d5dc17e0aadc383d2db43b0a0d3e029c4c
         StringBuilder sb = new StringBuilder();
-        sb.append(miner.substring(0,6));
+        sb.append(miner.substring(0,2+reserveLen));
         sb.append("...");
-        sb.append(miner.substring(38));
+        sb.append(miner.substring(miner.length() - reserveLen));
         return sb.toString();
     }
 
@@ -211,7 +220,7 @@ public class BaseUtil {
 
     public static ItemLatestBlockDataBinding generatorItemDataBinding(BlockSummaryBean bean){
         String num = BethApplication.getContext().getString(R.string.block_info_numer) + bean.number;
-        String miner = BethApplication.getContext().getString(R.string.block_info_miner) + BaseUtil.omitMinerString(bean.miner);
+        String miner = BethApplication.getContext().getString(R.string.block_info_miner) + BaseUtil.omitMinerString(bean.miner,4);
         String date = BethApplication.getContext().getString(R.string.block_info_txs_date,bean.txs,BaseUtil.timestampToString(bean.time));
         String reward = bean.reward + getString(R.string.block_info_eth);
         return new ItemLatestBlockDataBinding(num,miner,date,reward,bean.number);

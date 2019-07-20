@@ -56,5 +56,16 @@
     <string name="label_block_details">Block details</string>
     <string name="detail_time">Time</string>
     <string name="detail_tx">Transaction</string>
+    <string name="detail_miner">Miner</string>
+    <string name="detail_reward">Block reward</string>
+    <string name="detail_block_uncle_reward">Uncle block reward</string>
+    <string name="detail_difficult">Difficult</string>
+    <string name="detail_total_difficule">Toatal difficult</string>
+    <string name="detail_size">Size</string>
+    <string name="detail_gas_used">Gas used</string>
+    <string name="detail_gas_limit">Gas Limit</string>
+    <string name="detail_extra">Extra</string>
+    <string name="miner_mark">Mark</string>
+    <string name="miner_mark_hint">Please enter miner name</string>
 
 </resources>

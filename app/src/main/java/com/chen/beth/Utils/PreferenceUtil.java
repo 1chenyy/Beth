@@ -7,6 +7,7 @@ import com.chen.beth.BethApplication;
 
 public class PreferenceUtil {
     public static String PREFERENCE_NAME = "BethData";
+    public static String PREFERENCE_MINER_MARK = "Miner";
     public static final String IS_FIRST_RUN = "isFirstRun";
 
     public static boolean hasKey(String key){
@@ -41,6 +42,16 @@ public class PreferenceUtil {
 
     public static String getString(String key,String defValue){
         return BethApplication.getContext().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
+                .getString(key,defValue);
+    }
+
+    public static boolean putString(String key,String value,String name){
+        return BethApplication.getContext().getSharedPreferences(name, Context.MODE_PRIVATE)
+                .edit().putString(key,value).commit();
+    }
+
+    public static String getString(String key,String defValue,String name){
+        return BethApplication.getContext().getSharedPreferences(name,Context.MODE_PRIVATE)
                 .getString(key,defValue);
     }
 

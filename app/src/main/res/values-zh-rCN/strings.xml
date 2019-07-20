@@ -36,4 +36,15 @@
     <string name="label_block_details">区块详情</string>
     <string name="detail_time">出块时间</string>
     <string name="detail_tx">交易数</string>
+    <string name="detail_miner">矿工</string>
+    <string name="detail_reward">区块奖励</string>
+    <string name="detail_block_uncle_reward">叔块奖励</string>
+    <string name="detail_difficult">难度值</string>
+    <string name="detail_total_difficule">总难度</string>
+    <string name="detail_size">区块大小</string>
+    <string name="detail_gas_used">Gas消耗</string>
+    <string name="detail_gas_limit">Gas限制</string>
+    <string name="detail_extra">额外数据</string>
+    <string name="miner_mark">标注</string>
+    <string name="miner_mark_hint">请输入矿工名字</string>
 </resources>
