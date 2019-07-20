@@ -15,13 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <service
             android:name=".Worker.BlockChainAndPriceTask"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".Worker.QueryBlocksTask"
             android:exported="false" />
-
         <service
             android:name=".MainSyncService"
             android:enabled="true"

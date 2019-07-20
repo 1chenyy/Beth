@@ -33,4 +33,7 @@
     <string name="label_total">总供应量</string>
     <string name="ether">以太币</string>
     <string name="label_block_chain">全部区块</string>
+    <string name="label_block_details">区块详情</string>
+    <string name="detail_time">出块时间</string>
+    <string name="detail_tx">交易数</string>
 </resources>

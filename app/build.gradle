@@ -59,4 +59,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "org.jsoup:jsoup:1.12.1"
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-beta02'
 }

@@ -1,6 +1,7 @@
 package com.chen.beth.mainfragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,11 +12,11 @@ import android.view.animation.RotateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.QueryBlocksTask;
+import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentMainBinding;
 import com.chen.beth.models.MainFragmentBlockBundleBean;
 import com.chen.beth.models.BlockSummaryBean;
@@ -35,6 +37,7 @@ import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.PriceAndMktcapBean;
+import com.chen.beth.ui.RVItemClickListener;
 import com.chen.beth.ui.TransactionAndPriceMarker;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -45,10 +48,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
-public class MainFragment extends BaseFragment {
+import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
+
+public class MainFragment extends BaseFragment implements RVItemClickListener {
     private FragmentMainBinding binding;
     private MainTopViewModel viewModel;
-    private ArrayList<ItemLatestBlockDataBinding> temp;
+    private ArrayList<BlockSummaryBean> temp;
     private LatestBlockAdapter adapter;
 
     public MainFragment() {
@@ -77,11 +82,13 @@ public class MainFragment extends BaseFragment {
     private void configRecycleView() {
         RecyclerView rv = binding.rvLatestBlocks;
         rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setItemAnimator(new ScaleInTopAnimator());
         rv.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         temp = new ArrayList<>();
         adapter = new LatestBlockAdapter(this);
+        adapter.setListener(this);
         rv.setAdapter(adapter);
+
     }
 
     private void configChart() {
@@ -178,8 +185,7 @@ public class MainFragment extends BaseFragment {
                 if (adapter.getCurrent() == 0){
                     viewModel.loadingState.setValue(LoadingState.LOADING_SUCCEED);
                     for (BlockSummaryBean bean : event.result.blocks){
-                        ItemLatestBlockDataBinding v = BaseUtil.generatorItemDataBinding(bean);
-                        temp.add(v);
+                        temp.add(bean);
                     }
                     adapter.setInitList(temp);
                     adapter.setCurrent(event.result.blocks.get(0).number);
@@ -189,8 +195,7 @@ public class MainFragment extends BaseFragment {
                         if (bean.number > adapter.getCurrent()){
                             if (tempHight == 0)
                                 tempHight = bean.number;
-                            ItemLatestBlockDataBinding v = BaseUtil.generatorItemDataBinding(bean);
-                            temp.add(v);
+                            temp.add(bean);
                         }else
                             break;
 
@@ -239,6 +244,9 @@ public class MainFragment extends BaseFragment {
                 Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mktcapFragment,
                         null,null,extras);
                 break;
+            case R.id.rl_latest:
+                Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_blockChainFragment);
+                break;
         }
     }
 
@@ -260,9 +268,11 @@ public class MainFragment extends BaseFragment {
         }
     }
 
-    public void onItemClick(View v,int num){
-        LogUtil.d(this.getClass(),num+"");
+
+
+    @Override
+    public void onItemClick(int position) {
+        LogUtil.d(this.getClass(),position+"");
+        BlockDetails.showBlockDetails(getContext(),adapter.getList().get(position));
     }
-
-
 }

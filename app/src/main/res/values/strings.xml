@@ -44,6 +44,7 @@
     <string name="eth_mketcap">Ether supply details</string>
     <string name="shared_element_price" translatable="false">price</string>
     <string name="shared_element_mktcap" translatable="false">mktcap</string>
+    <string name="shared_element_block" translatable="false">block</string>
     <string name="label_genesis">Genesis block</string>
     <string name="label_block">Block reward</string>
     <string name="label_uncle">UncleBlock reward</string>
@@ -52,8 +53,8 @@
     <string name="label_total">Total supply</string>
     <string name="ether">Ether</string>
     <string name="label_block_chain">BlockChain</string>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="label_block_details">Block details</string>
+    <string name="detail_time">Time</string>
+    <string name="detail_tx">Transaction</string>
 
 </resources>

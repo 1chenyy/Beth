@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.chen.beth.blockdetailsfragment.BlockDetailsDataBinding" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/main_linearlayout_bg">
+
+
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{data.number}"
+                android:textColor="@android:color/black"
+                android:textSize="26sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="50dp"
+                android:background="@android:color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_number" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <TextView
+                android:id="@+id/tv_time_title"
+                style="@style/DetailsTVTitle"
+                android:text="@string/detail_time"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/line" />
+
+
+            <TextView
+                android:id="@+id/tv_time_content"
+                style="@style/DetailsTvContent"
+                android:text="@{data.time}"
+                app:layout_constraintLeft_toRightOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/line" />
+
+            <TextView
+                android:id="@+id/tv_tx_title"
+                style="@style/DetailsTVTitle"
+                android:text="@string/detail_tx"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_title" />
+
+            <TextView
+                android:id="@+id/tv_tx_content"
+                style="@style/DetailsTvContent"
+                android:text="@{data.txs}"
+                app:layout_constraintLeft_toRightOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_content" />
+
+            <TextView
+                android:id="@+id/tv_miner_title"
+                style="@style/DetailsTVTitle"
+                android:text="@string/detail_tx"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_tx_title" />
+
+            <TextView
+                android:id="@+id/tv_miner_content"
+                style="@style/DetailsTvContent"
+                android:text="@{data.miner}"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                app:layout_constraintLeft_toRightOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/tv_tx_content" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -12,6 +12,7 @@ import com.chen.beth.databinding.RvItemAllBlockChainBinding;
 import com.chen.beth.databinding.RvItemBlockChainBinding;
 import com.chen.beth.mainfragment.LatestBlockViewHolder;
 import com.chen.beth.models.BlockSummaryBean;
+import com.chen.beth.ui.RVItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,16 @@ public class BlockChainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private BlockChainFooterDatabinding footerDatabinding;
     private static final int TYPE_BLOCK = 1;
     private static final int TYPE_FOOTER = TYPE_BLOCK+1;
+    private RVItemClickListener listener;
 
     public BlockChainAdapter(BlockChainFragment fragment) {
         list = new ArrayList<>();
         this.fragment = fragment;
         footerDatabinding = new BlockChainFooterDatabinding();
+    }
+
+    public void setListener(RVItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,7 +44,7 @@ public class BlockChainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     parent,
                     false
             );
-            return new BlockChainViewHolder(binding);
+            return new BlockChainViewHolder(binding,listener);
         }else{
             ItemFooterLayoutBinding binding = ItemFooterLayoutBinding.inflate(
                     LayoutInflater.from(parent.getContext()),

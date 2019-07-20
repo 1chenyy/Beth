@@ -4,6 +4,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +16,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.chen.beth.BaseFragment;
 import com.chen.beth.BethApplication;
+import com.chen.beth.R;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Worker.BlockChainAndPriceTask;
@@ -23,13 +29,17 @@ import com.chen.beth.databinding.FragmentBlockChainBinding;
 import com.chen.beth.models.BlockChainFragmentBlockBundleBean;
 import com.chen.beth.models.BlockSummaryBean;
 import com.chen.beth.ui.ColorfulLoading;
+import com.chen.beth.ui.ItemOffsetDecoration;
+import com.chen.beth.ui.RVItemClickListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
-public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
+
+public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, RVItemClickListener {
 
 
     private FragmentBlockChainBinding binding;
@@ -69,12 +79,14 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
     private void configRecycleView() {
         rv = binding.rvBlockChain;
         rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setItemAnimator(new ScaleInTopAnimator());
         scrollListener = new BlockChainOnScrollListener(0);
         rv.addOnScrollListener(scrollListener);
-        rv.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        //rv.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        rv.addItemDecoration(new ItemOffsetDecoration());
         temp = new ArrayList<>();
         adapter = new BlockChainAdapter(this);
+        adapter.setListener(this);
         rv.setAdapter(adapter);
     }
 
@@ -112,7 +124,12 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
-
         BlockChainAndPriceTask.queryLatestBlocksFromNet(BethApplication.getContext(),high);
+    }
+
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

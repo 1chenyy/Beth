@@ -16,4 +16,5 @@ public class Const {
     public static final SimpleDateFormat SDF_DAY = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat SDF_DETAIL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat CHART_CHART_DATE = new SimpleDateFormat("M.dd");
+    public static final String ARG_POSITION = "position";
 }

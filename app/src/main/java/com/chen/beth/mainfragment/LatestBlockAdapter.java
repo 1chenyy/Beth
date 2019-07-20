@@ -1,23 +1,33 @@
 package com.chen.beth.mainfragment;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.databinding.RvItemBlockChainBinding;
+import com.chen.beth.models.BlockSummaryBean;
+import com.chen.beth.ui.RVItemClickListener;
 
 import java.util.ArrayList;
 
 public class LatestBlockAdapter extends RecyclerView.Adapter<LatestBlockViewHolder> {
     private static final int MAX_ITEMS = 50;
-    private ArrayList<ItemLatestBlockDataBinding> list;
+    private ArrayList<BlockSummaryBean> list;
     private int current = 0;
     private MainFragment fragment;
+    private RVItemClickListener listener;
+
     public LatestBlockAdapter(MainFragment fragment){
         list = new ArrayList<>();
         this.fragment = fragment;
+    }
+
+    public void setListener(RVItemClickListener listener){
+        this.listener = listener;
     }
 
     @NonNull
@@ -28,12 +38,12 @@ public class LatestBlockAdapter extends RecyclerView.Adapter<LatestBlockViewHold
                 parent,
                 false
         );
-        return new LatestBlockViewHolder(binding);
+        return new LatestBlockViewHolder(binding,listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull LatestBlockViewHolder holder, int position) {
-        holder.bind(list.get(position),fragment);
+        holder.bind(BaseUtil.generatorItemDataBinding(list.get(position)));
     }
 
     @Override
@@ -43,12 +53,12 @@ public class LatestBlockAdapter extends RecyclerView.Adapter<LatestBlockViewHold
 
 
 
-    public void setInitList(ArrayList<ItemLatestBlockDataBinding> items){
+    public void setInitList(ArrayList<BlockSummaryBean> items){
         list.addAll(0,items);
         notifyDataSetChanged();
     }
 
-    public void addItems(ArrayList<ItemLatestBlockDataBinding> items){
+    public void addItems(ArrayList<BlockSummaryBean> items){
         list.addAll(0,items);
         notifyItemRangeInserted(0,items.size());
         int oldSize = 0;
@@ -60,7 +70,7 @@ public class LatestBlockAdapter extends RecyclerView.Adapter<LatestBlockViewHold
 
     }
 
-    public ArrayList<ItemLatestBlockDataBinding> getList(){
+    public ArrayList<BlockSummaryBean> getList(){
         return list;
     }
 

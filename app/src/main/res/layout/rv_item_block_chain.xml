@@ -4,9 +4,6 @@
 
     <data>
         <variable
-            name="holder"
-            type="com.chen.beth.mainfragment.MainFragment" />
-        <variable
             name="data"
             type="com.chen.beth.mainfragment.ItemLatestBlockDataBinding" />
     </data>
@@ -14,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{(view)->holder.onItemClick(view,data.number)}"
+        android:background="@drawable/item_ripple"
         >
 
         <ImageView
@@ -24,6 +20,7 @@
             android:layout_height="36dp"
             android:layout_margin="8dp"
             android:src="@drawable/ic_item_blockchain"
+            android:transitionName="@string/shared_element_block"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

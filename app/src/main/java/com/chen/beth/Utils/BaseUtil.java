@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -35,6 +36,8 @@ public class BaseUtil {
     public static final float SCREEN_HEIGHT = METRICS.heightPixels;
     public static final ConnectivityManager CONNECTIVITY_MANAGER = ((ConnectivityManager) BethApplication.getContext().getSystemService(
             Context.CONNECTIVITY_SERVICE));
+    public static final Typeface BLOCK_NUMBET_TYPEFACE = Typeface.createFromAsset(
+            BethApplication.getContext().getAssets(),"fonts/bigfoot.ttf");
 
 
     public static boolean isRunOnUiThread(){
