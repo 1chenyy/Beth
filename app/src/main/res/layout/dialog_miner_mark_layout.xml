@@ -2,17 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_margin="8dp"
+        android:id="@+id/edit_layout"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_miner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/miner_mark_hint"/>
+            android:layout_height="match_parent"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 </RelativeLayout>

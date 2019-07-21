@@ -5,6 +5,7 @@ import com.chen.beth.models.HistoryPriceBean;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
+import com.chen.beth.models.TransactionBundleBean;
 
 import io.reactivex.Maybe;
 import retrofit2.Call;
@@ -65,4 +66,7 @@ public interface APIServices {
 
     @GET("getonepageblocks/{num}")
     Call<MainFragmentBlockBundleBean> getOnePageBlocks(@Path("num")int num);
+
+    @GET("gettransactionsbynum/{num}")
+    Call<TransactionBundleBean> getTransactionsByNumber(@Path("num")int num);
 }

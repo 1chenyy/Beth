@@ -88,6 +88,10 @@ public class BlockChainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyDataSetChanged();
     }
 
+    public BlockSummaryBean getBlockByPosition(int position){
+        return list.get(position);
+    }
+
     public void setLoadingState(boolean state){
         footerDatabinding.loadingState.set(state);
     }

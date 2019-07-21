@@ -36,6 +36,7 @@ import com.chen.beth.models.BlockSummaryBean;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.LoadingState;
+import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.PriceAndMktcapBean;
 import com.chen.beth.ui.RVItemClickListener;
 import com.chen.beth.ui.TransactionAndPriceMarker;
@@ -227,6 +228,11 @@ public class MainFragment extends BaseFragment implements RVItemClickListener {
         }
 
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMinerMarkEvent(MinerMark event){
+        adapter.notifyDataSetChanged();
     }
 
     public void onClickTopView(View view){

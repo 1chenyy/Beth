@@ -11,6 +11,7 @@ import androidx.room.Room;
 
 import com.chen.beth.db.BlockData;
 import com.facebook.stetho.Stetho;
+import com.tencent.mmkv.MMKV;
 
 public class BethApplication extends Application {
     private static Context context;
@@ -22,6 +23,7 @@ public class BethApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
+        MMKV.initialize(this);
         context = getApplicationContext();
         mainThread = android.os.Process.myTid();
         handler = new Handler();

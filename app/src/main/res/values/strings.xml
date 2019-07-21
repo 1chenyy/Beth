@@ -66,6 +66,28 @@
     <string name="detail_gas_limit">Gas Limit</string>
     <string name="detail_extra">Extra</string>
     <string name="miner_mark">Mark</string>
-    <string name="miner_mark_hint">Please enter miner name</string>
+    <string name="miner_mark_hint">Please enter an account alias</string>
+    <string name="info_no_input">No input, no modification</string>
+    <string name="info_byte">Bytes</string>
+    <string name="info_copy">Copy</string>
+    <string name="info_copy_toast">Copied to the paste board</string>
+    <string name="bt_mark">Mark</string>
+    <string name="bt_remove">Remove annotation</string>
+    <string name="bt_return">Return</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="search_transaction">Transaction query</string>
+    <string name="search_account">Account query</string>
+    <string name="search_block">Block query</string>
+    <string name="search_history">The historical record</string>
+    <string name="edit_warn">Do not input too much</string>
+    <string name="hint_tx">Please input transaction hash</string>
+    <string name="hint_account">Please input account address</string>
+    <string name="hint_block">Please input block number</string>
+    <string name="error_block">Please enter the correct block number</string>
+    <string name="err_tx_length">A Hash value of 64 characters is required</string>
+    <string name="error_hash">Please enter the correct hexadecimal character</string>
+    <string name="error_account_length">The account address should consist of 40 characters</string>
 
 </resources>

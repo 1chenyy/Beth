@@ -25,9 +25,11 @@ import com.chen.beth.R;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Worker.BlockChainAndPriceTask;
+import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentBlockChainBinding;
 import com.chen.beth.models.BlockChainFragmentBlockBundleBean;
 import com.chen.beth.models.BlockSummaryBean;
+import com.chen.beth.models.MinerMark;
 import com.chen.beth.ui.ColorfulLoading;
 import com.chen.beth.ui.ItemOffsetDecoration;
 import com.chen.beth.ui.RVItemClickListener;
@@ -122,6 +124,11 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMinerMarkEvent(MinerMark event){
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onRefresh() {
         BlockChainAndPriceTask.queryLatestBlocksFromNet(BethApplication.getContext(),high);
@@ -130,6 +137,6 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
 
     @Override
     public void onItemClick(int position) {
-
+        BlockDetails.showBlockDetails(getContext(),adapter.getBlockByPosition(position));
     }
 }

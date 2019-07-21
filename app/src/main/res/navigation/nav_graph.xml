@@ -19,10 +19,6 @@
         <action
             android:id="@+id/action_mainFragment_to_blockChainFragment"
             app:destination="@id/blockChainFragment" />
-        <action
-
-            android:id="@+id/action_mainFragment_to_blockDetailsFragment"
-            app:destination="@id/blockDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/priceFragment"
@@ -37,14 +33,10 @@
     <fragment
         android:id="@+id/blockChainFragment"
         android:name="com.chen.beth.blockchainfragment.BlockChainFragment"
-        android:label="@string/label_block_chain" >
-        <action
-            android:id="@+id/action_blockChainFragment_to_blockDetailsFragment"
-            app:destination="@id/blockDetailsFragment" />
-    </fragment>
+        android:label="@string/label_block_chain" />
     <fragment
-        android:id="@+id/blockDetailsFragment"
-        android:name="com.chen.beth.blockdetailsfragment.BlockDetailsFragment"
-        android:label="@string/label_block_details"
-        tools:layout="@layout/dialog_block_details" />
+        android:id="@+id/searchFragment"
+        android:name="com.chen.beth.searchfragment.SearchFragment"
+        android:label="@string/menu_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>

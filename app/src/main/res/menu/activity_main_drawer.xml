@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_menu_blocks"
             android:title="@string/menu_blocks" />
         <item
-            android:id="@+id/nav_search"
+            android:id="@+id/searchFragment"
             android:icon="@drawable/ic_search_black_24dp"
             android:title="@string/menu_search" />
         <item

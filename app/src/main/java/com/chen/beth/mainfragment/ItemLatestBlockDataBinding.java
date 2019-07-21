@@ -3,17 +3,17 @@ package com.chen.beth.mainfragment;
 import androidx.databinding.ObservableField;
 
 public class ItemLatestBlockDataBinding {
-    public ObservableField<String> blockNum = new ObservableField<>();
-    public ObservableField<String> blockMiner = new ObservableField<>();
-    public ObservableField<String> blockTxsAndDate = new ObservableField<>();
-    public ObservableField<String> blockReward = new ObservableField<>();
-    public ObservableField<Integer> number = new ObservableField<>();
+    public String blockNum ;
+    public String blockMiner ;
+    public String blockTxsAndDate ;
+    public String blockReward ;
+    public int number ;
 
     public ItemLatestBlockDataBinding(String num, String miner, String txsAndDate, String reward,int number){
-        blockNum.set(num);
-        blockMiner.set(miner);
-        blockTxsAndDate.set(txsAndDate);
-        blockReward.set(reward);
-        this.number.set(number);
+        blockNum = num;
+        blockMiner = miner;
+        blockTxsAndDate = txsAndDate;
+        blockReward = reward;
+        this.number = number;
     }
 }

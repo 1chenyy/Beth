@@ -18,6 +18,7 @@ import com.chen.beth.R;
 import com.chen.beth.mainfragment.ItemLatestBlockDataBinding;
 import com.chen.beth.models.MainFragmentBlockBundleBean;
 import com.chen.beth.models.BlockSummaryBean;
+import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -196,7 +197,7 @@ public class BaseUtil {
     }
 
     public static String omitMinerString(String miner,int reserveLen){
-        String name = PreferenceUtil.getString(miner,"",PreferenceUtil.PREFERENCE_MINER_MARK);
+        String name = MMKV.defaultMMKV().decodeString(miner,"");
         if (!TextUtils.isEmpty(name)){
             if (name.length()<=20){
                 return name;
@@ -206,10 +207,14 @@ public class BaseUtil {
 
         }
         //0x5a0b54d5dc17e0aadc383d2db43b0a0d3e029c4c
+        return omitHashString(miner,reserveLen);
+    }
+
+    public static String omitHashString(String hash,int reserveLen){
         StringBuilder sb = new StringBuilder();
-        sb.append(miner.substring(0,2+reserveLen));
+        sb.append(hash.substring(0,2+reserveLen));
         sb.append("...");
-        sb.append(miner.substring(miner.length() - reserveLen));
+        sb.append(hash.substring(hash.length() - reserveLen));
         return sb.toString();
     }
 
