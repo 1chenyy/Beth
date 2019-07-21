@@ -66,4 +66,5 @@
     <string name="err_tx_length">交易Hash需要由64个字符组成！</string>
     <string name="error_hash">请输入正确的16进制字符</string>
     <string name="error_account_length">账户地址需要由40个字符组成！</string>
+    <string name="dialog_title_miner_mark">账户别名</string>
 </resources>

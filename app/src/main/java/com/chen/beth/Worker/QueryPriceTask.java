@@ -12,7 +12,7 @@ public class QueryPriceTask implements Runnable {
     public void run() {
         LogUtil.d(this.getClass(),"开始获取价格与市值");
         if (BaseUtil.isConnected()){
-            RetrofitManager.getAPIServices().getPriceAndMketcap().
+            RetrofitManager.getBethAPIServices().getPriceAndMketcap().
                     subscribe(p->handleSucceed(p),
                             t->handleFailed(t));
         }else{

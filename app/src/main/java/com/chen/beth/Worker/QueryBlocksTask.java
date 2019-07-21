@@ -64,7 +64,7 @@ public class QueryBlocksTask extends IntentService {
     }
 
     private void handleQueryLatest15Blocks(){
-        RetrofitManager.getAPIServices().getLatest15Blocks()
+        RetrofitManager.getBethAPIServices().getLatest15Blocks()
                 .map(b->b = BaseUtil.filterBlocks(b))
                 .subscribe(b->handleSucceed( b,0),
                         t->handleFailed(t));
@@ -73,7 +73,7 @@ public class QueryBlocksTask extends IntentService {
 
 
     private void handleQueryLatestBlocks(int current){
-        RetrofitManager.getAPIServices().getLatestBlocks(current)
+        RetrofitManager.getBethAPIServices().getLatestBlocks(current)
                 .map(b->b = BaseUtil.filterBlocks(b))
                 .subscribe(b->handleSucceed(b,current),
                         t->handleFailed(t));

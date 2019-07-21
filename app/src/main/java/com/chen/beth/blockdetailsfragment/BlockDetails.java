@@ -106,7 +106,7 @@ public class BlockDetails {
                 }
             }
         });
-
+        builder.setTitle(R.string.dialog_title_miner_mark);
         builder.setView(view);
         builder.setPositiveButton(BaseUtil.getString(R.string.bt_mark), (d, w)->{
             String s = editText.getText().toString().trim();

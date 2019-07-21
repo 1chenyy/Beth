@@ -44,7 +44,9 @@
     <string name="eth_mketcap">Ether supply details</string>
     <string name="shared_element_price" translatable="false">price</string>
     <string name="shared_element_mktcap" translatable="false">mktcap</string>
-    <string name="shared_element_block" translatable="false">block</string>
+    <string name="shared_element_search_tx" translatable="false">search_tx</string>
+    <string name="shared_element_search_account" translatable="false">search_account</string>
+    <string name="shared_element_search_block" translatable="false">search_block</string>
     <string name="label_genesis">Genesis block</string>
     <string name="label_block">Block reward</string>
     <string name="label_uncle">UncleBlock reward</string>
@@ -89,5 +91,6 @@
     <string name="err_tx_length">A Hash value of 64 characters is required</string>
     <string name="error_hash">Please enter the correct hexadecimal character</string>
     <string name="error_account_length">The account address should consist of 40 characters</string>
+    <string name="dialog_title_miner_mark">Account alias</string>
 
 </resources>

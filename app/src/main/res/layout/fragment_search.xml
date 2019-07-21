@@ -16,7 +16,7 @@
         tools:context=".searchfragment.SearchFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card1"
+            android:id="@+id/card_tx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -25,7 +25,7 @@
             android:translationZ="4dp"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/card2"
+            app:layout_constraintRight_toLeftOf="@id/card_account"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -34,6 +34,7 @@
                 android:layout_height="48dp"
                 android:layout_margin="8dp"
                 android:src="@drawable/ic_tx"
+                android:transitionName="@string/shared_element_search_tx"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +54,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card2"
+            android:id="@+id/card_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -61,8 +62,8 @@
             android:onClick="@{handle::onCardClick}"
             android:translationZ="4dp"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/card1"
-            app:layout_constraintRight_toLeftOf="@id/card3"
+            app:layout_constraintLeft_toRightOf="@id/card_tx"
+            app:layout_constraintRight_toLeftOf="@id/card_block"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -71,6 +72,7 @@
                 android:layout_height="48dp"
                 android:layout_margin="8dp"
                 android:src="@drawable/ic_account"
+                android:transitionName="@string/shared_element_search_account"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -90,15 +92,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card3"
+            android:id="@+id/card_block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/item_ripple"
             android:onClick="@{handle::onCardClick}"
             android:translationZ="4dp"
+            android:transitionName="@string/shared_element_search_block"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/card2"
+            app:layout_constraintLeft_toRightOf="@id/card_account"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -108,6 +111,7 @@
                 android:layout_height="48dp"
                 android:layout_margin="8dp"
                 android:src="@drawable/ic_block"
+                android:transitionName="@string/shared_element_search_block"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -133,7 +137,7 @@
             android:layout_margin="10dp"
             android:text="@string/search_history"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card1" />
+            app:layout_constraintTop_toBottomOf="@id/card_tx" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_history"

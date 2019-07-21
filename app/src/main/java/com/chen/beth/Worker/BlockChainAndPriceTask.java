@@ -104,7 +104,7 @@ public class BlockChainAndPriceTask extends IntentService {
 
     private void handleQueryLatesBlocksFromNet(int start) {
         LogUtil.d(this.getClass(),"从"+start+"开始查询最新区块");
-        RetrofitManager.getAPIServices().getLatestBlocks(start)
+        RetrofitManager.getBethAPIServices().getLatestBlocks(start)
                 .map(b -> b = BaseUtil.filterBlocks(b))
                 .subscribe(b->handleQueryLatestBlockSucceed(b,start),
                         t->handleQueryLatestBlockFailed(t));
@@ -177,7 +177,7 @@ public class BlockChainAndPriceTask extends IntentService {
             List<BlockSummaryBean> finalList = list;
             try {
                 LogUtil.d(this.getClass(), "从" + netStart + "开始从网络取10个区块");
-                Response<MainFragmentBlockBundleBean> response = RetrofitManager.getAPIServices().getOnePageBlocks(netStart).execute();
+                Response<MainFragmentBlockBundleBean> response = RetrofitManager.getBethAPIServices().getOnePageBlocks(netStart).execute();
                 if (response.isSuccessful() && response.body() != null && response.body().result != null) {
                     LogUtil.d(this.getClass(), "从网络取区块成功" + response.body().status);
                     MainFragmentBlockBundleBean respBody = BaseUtil.filterBlocks(response.body());
@@ -244,7 +244,7 @@ public class BlockChainAndPriceTask extends IntentService {
 
     private void handleQueryHistoryPrice() {
         LogUtil.d(this.getClass(), "开始查询历史价格");
-        RetrofitManager.getAPIServices().getHistoryPrice()
+        RetrofitManager.getBethAPIServices().getHistoryPrice()
                 .subscribe(b -> handleSucceed(b),
                         t -> handleHistoryPriceFailed(t));
     }

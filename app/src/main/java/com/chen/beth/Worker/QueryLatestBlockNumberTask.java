@@ -25,7 +25,7 @@ public class QueryLatestBlockNumberTask implements Runnable {
         }
 
         if (state == NetState.CONNECTED){
-            RetrofitManager.getAPIServices().getLatestBlock()
+            RetrofitManager.getBethAPIServices().getLatestBlock()
                     .subscribe(l->handleSucceed(l),t->handleFailed(t));
         }else if (state == NetState.DISCONNECTED){
             LatestBlockBean event = new LatestBlockBean();
