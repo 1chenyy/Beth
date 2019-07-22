@@ -17,6 +17,10 @@ import com.chen.beth.net.RetrofitManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class SearchTask extends IntentService {
     private static final String ACTION_SEARCH_TRANSACTION = "com.chen.beth.Worker.action.search_transaction";
@@ -38,6 +42,16 @@ public class SearchTask extends IntentService {
         intent.setAction(ACTION_SEARCH_TRANSACTION);
         intent.putExtra(EXTRA_TX_HASH, hash);
         context.startService(intent);
+    }
+    private static Disposable searchTransactionDisposable;
+
+    public static void stopSearchTransaction(){
+        if (searchTransactionDisposable!=null){
+            LogUtil.d(SearchTask.class,searchTransactionDisposable.isDisposed()+"");
+            //searchTransactionDisposable.dispose();
+            LogUtil.d(SearchTask.class,searchTransactionDisposable.isDisposed()+"");
+        }
+
     }
 
     public static void startSearchBlockByNumber(Context context, int num,boolean user){
@@ -151,10 +165,11 @@ public class SearchTask extends IntentService {
             event.result = beans[0];
             EventBus.getDefault().post(event);
         }else{
-            RetrofitManager.getEtherscanProxyAPIServices()
+            searchTransactionDisposable = RetrofitManager.getEtherscanProxyAPIServices()
                     .getTransactionByHash(Const.ETHERSCAN_PROXY_MODULE,
                             Const.ETHERSCAN_PROXY_ACTION_GETTXS,
                             hash)
+                    .subscribeOn(Schedulers.io())
                     .subscribe(b->handleSucceedSearchTransactionByHash(b),
                             t->handleFailedSearchTransactionByHash(t));
         }

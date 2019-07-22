@@ -116,7 +116,7 @@ public class BlockDetails {
                 BaseUtil.showToast(BaseUtil.getString(R.string.info_no_input));
             }else{
                 MMKV.defaultMMKV().encode(miner,s);
-                PreferenceUtil.putString(miner,s,PreferenceUtil.PREFERENCE_MINER_MARK);
+                //PreferenceUtil.putString(miner,s,PreferenceUtil.PREFERENCE_MINER_MARK);
                 data.miner.set(s);
                 EventBus.getDefault().post(new MinerMark());
             }

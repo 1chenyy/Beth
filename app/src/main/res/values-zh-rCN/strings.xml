@@ -46,7 +46,7 @@
     <string name="detail_gas_limit">Gas限制</string>
     <string name="detail_extra">附加数据</string>
     <string name="miner_mark">标注</string>
-    <string name="miner_mark_hint">请输入账户别名</string>
+    <string name="miner_mark_hint">请输入自定义名称</string>
     <string name="info_no_input">没有任何输入，不做修改</string>
     <string name="info_byte">字节</string>
     <string name="info_copy">复制</string>
@@ -66,7 +66,7 @@
     <string name="err_tx_length">交易Hash需要由64个字符组成！</string>
     <string name="error_hash">请输入正确的16进制字符</string>
     <string name="error_account_length">账户地址需要由40个字符组成！</string>
-    <string name="dialog_title_miner_mark">账户别名</string>
+    <string name="dialog_title_miner_mark">自定义名称</string>
     <string name="tx_hash">交易Hash</string>
     <string name="tx_time">交易时间</string>
     <string name="tx_block">所在区块</string>

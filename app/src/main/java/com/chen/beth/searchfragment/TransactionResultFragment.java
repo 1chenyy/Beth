@@ -5,10 +5,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +22,19 @@ import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.ConvertUtil;
+import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.SearchTask;
 import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentTransactionResultBinding;
 import com.chen.beth.models.LoadingState;
+import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.OneBlockSummaryBean;
 import com.chen.beth.models.TransactionDetailBean;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.tencent.mmkv.MMKV;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.w3c.dom.Entity;
@@ -119,8 +128,74 @@ public class TransactionResultFragment extends BaseFragment {
         SearchTask.startSearchTransaction(BethApplication.getContext(),arg);
     }
 
-    public void onMarkClick(View v,String hash){
-        //BlockDetails.showMarkDialog(getContext(),hash,BaseUtil.getString(R.string.miner_mark_hint),R.string.dialog_title_miner_mark);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMarkEvent(MinerMark mark){
+        switch (mark.id){
+            case R.id.tv_from_content:
+                viewModel.from.setValue(BaseUtil.omitMinerString(mark.hash,6));
+                break;
+            case R.id.tv_to_content:
+                viewModel.to.setValue(BaseUtil.omitMinerString(mark.hash,6));
+                break;
+            case R.id.tv_hash_content:
+                viewModel.hash.setValue(BaseUtil.omitMinerString(mark.hash,6));
+                break;
+        }
     }
 
+    public void onMarkClick(View v,String hash){
+        showMarkDialog(v.getId(),hash);
+    }
+
+    private void showMarkDialog(int id,String hash) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_miner_mark_layout,null);
+        TextInputLayout textInputLayout = view.findViewById(R.id.edit_layout);
+        textInputLayout.setCounterMaxLength(20);
+        textInputLayout.setCounterEnabled(true);
+        textInputLayout.setHint(BaseUtil.getString(R.string.miner_mark_hint));
+        TextInputEditText editText = view.findViewById(R.id.et_miner);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>textInputLayout.getCounterMaxLength()){
+                    textInputLayout.setError(BaseUtil.getString(R.string.edit_warn));
+                }
+            }
+        });
+        builder.setTitle(R.string.dialog_title_miner_mark);
+        builder.setView(view);
+        builder.setPositiveButton(BaseUtil.getString(R.string.bt_mark), (d, w)->{
+            String s = editText.getText().toString().trim();
+            if (TextUtils.isEmpty(s)){
+                BaseUtil.showToast(BaseUtil.getString(R.string.info_no_input));
+            }else{
+                MMKV.defaultMMKV().encode(hash,s);
+                EventBus.getDefault().post(new MinerMark());
+            }
+        });
+        builder.setNegativeButton(BaseUtil.getString(R.string.bt_remove),(d,w)->{
+            MMKV.defaultMMKV().removeValueForKey(hash);
+            EventBus.getDefault().post(new MinerMark());
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(MMKV.defaultMMKV().contains(hash));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SearchTask.stopSearchTransaction();
+    }
 }
