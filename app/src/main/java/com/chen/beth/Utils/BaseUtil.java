@@ -211,6 +211,9 @@ public class BaseUtil {
     }
 
     public static String omitHashString(String hash,int reserveLen){
+        if (hash.length()<2*reserveLen+2){
+            return hash;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(hash.substring(0,2+reserveLen));
         sb.append("...");

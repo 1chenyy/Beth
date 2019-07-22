@@ -40,12 +40,11 @@
         android:label="@string/menu_search"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_searchFragment_to_searchResultFragment"
-            app:destination="@id/searchResultFragment" />
+            android:id="@+id/action_searchFragment_to_transactionResultFragment"
+            app:destination="@id/transactionResultFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchResultFragment"
-        android:name="com.chen.beth.searchfragment.SearchResultFragment"
-        android:label="fragment_search_result"
-        tools:layout="@layout/fragment_search_result" />
+        android:id="@+id/transactionResultFragment"
+        android:name="com.chen.beth.searchfragment.TransactionResultFragment"
+        android:label="@string/label_transaction_result" />
 </navigation>

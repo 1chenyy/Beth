@@ -4,6 +4,7 @@ import com.chen.beth.models.MainFragmentBlockBundleBean;
 import com.chen.beth.models.HistoryPriceBean;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
+import com.chen.beth.models.OneBlockSummaryBean;
 import com.chen.beth.models.PriceAndMktcapBean;
 import com.chen.beth.models.TransactionBundleBean;
 
@@ -69,4 +70,7 @@ public interface BethAPIServices {
 
     @GET("gettransactionsbynum/{num}")
     Call<TransactionBundleBean> getTransactionsByNumber(@Path("num")int num);
+
+    @GET("getblockbynum/{num}")
+    Maybe<OneBlockSummaryBean> getBlockByNumber(@Path("num")int num);
 }

@@ -1,15 +1,12 @@
 package com.chen.beth;
 
 import android.app.Application;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 
 import androidx.room.Room;
 
-import com.chen.beth.db.BlockData;
+import com.chen.beth.db.DBData;
 import com.facebook.stetho.Stetho;
 import com.tencent.mmkv.MMKV;
 
@@ -17,7 +14,7 @@ public class BethApplication extends Application {
     private static Context context;
     private static int mainThread;
     private static Handler handler;
-    private static BlockData blockData;
+    private static DBData DBData;
 
     @Override
     public void onCreate() {
@@ -27,7 +24,7 @@ public class BethApplication extends Application {
         context = getApplicationContext();
         mainThread = android.os.Process.myTid();
         handler = new Handler();
-        blockData = Room.databaseBuilder(this, BlockData.class,"blocks.db").build();
+        DBData = Room.databaseBuilder(this, DBData.class,"blocks.db").build();
     }
 
 
@@ -44,7 +41,7 @@ public class BethApplication extends Application {
         return handler;
     }
 
-    public static BlockData getBlockData(){
-        return blockData;
+    public static DBData getDBData(){
+        return DBData;
     }
 }

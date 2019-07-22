@@ -66,18 +66,20 @@ public class BlockDetails {
         binding.setData(data);
     }
 
-    private static void showHashSnackBar(View v,String hash,Context context){
+    public static void showHashSnackBar(View v,String hash,Context context){
         Snackbar snackbar = Snackbar.make(v,hash,Snackbar.LENGTH_SHORT)
                 .setAction(BaseUtil.getString(R.string.info_copy),
-                        view->{
-                            ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                            cm.setPrimaryClip(ClipData.newPlainText("hash",hash));
-                            BaseUtil.showToast(BaseUtil.getString(R.string.info_copy_toast));
-                        });
+                        view->copy(context,hash));
         View view = snackbar.getView();
         ((TextView) view.findViewById(R.id.snackbar_text)).setTextSize(10);
         snackbar.show();
 
+    }
+
+    public static void copy(Context context,String s){
+        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newPlainText("hash",s));
+        BaseUtil.showToast(BaseUtil.getString(R.string.info_copy_toast));
     }
 
     private static void showMinerMarkDialog(Context context,String miner){

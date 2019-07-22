@@ -59,8 +59,8 @@
     <string name="detail_time">Time</string>
     <string name="detail_tx">Transaction</string>
     <string name="detail_miner">Miner</string>
-    <string name="detail_reward">Block reward</string>
-    <string name="detail_block_uncle_reward">Uncle block reward</string>
+    <string name="detail_reward">Reward</string>
+    <string name="detail_block_uncle_reward">Uncle Reward</string>
     <string name="detail_difficult">Difficult</string>
     <string name="detail_total_difficule">Toatal difficult</string>
     <string name="detail_size">Size</string>
@@ -92,5 +92,25 @@
     <string name="error_hash">Please enter the correct hexadecimal character</string>
     <string name="error_account_length">The account address should consist of 40 characters</string>
     <string name="dialog_title_miner_mark">Account alias</string>
+    <string name="tx_hash">Hash</string>
+    <string name="tx_time">Timestamp</string>
+    <string name="tx_block">Block</string>
+    <string name="tx_from">From</string>
+    <string name="tx_to">To</string>
+    <string name="tx_value">Value</string>
+    <string name="tx_gas">Gas</string>
+    <string name="tx_gas_price">GasPrice</string>
+    <string name="tx_nonce">Nonce</string>
+    <string name="tx_index">Index</string>
+    <string name="tx_r">r</string>
+    <string name="tx_s">s</string>
+    <string name="tx_v">v</string>
+    <string name="tx_input">Input</string>
+    <string name="tx_fee">Fee</string>
+    <string name="label_transaction_result">Transaction</string>
+    <string name="bt_search_no_data">The data queried does not exist</string>
+    <string name="history_tx">"Transaction : "</string>
+    <string name="history_account">"Account : "</string>
+    <string name="history_block">"Block : "</string>
 
 </resources>

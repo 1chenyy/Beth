@@ -17,6 +17,7 @@ import java.util.List;
 
 public class MktcapFragmentBindAdapter {
     public static final int[] LABELS = new int[]{R.string.label_genesis,R.string.label_block,R.string.label_uncle};
+    public static final String[] COLORS = new String[]{"#CC3399","#99CC00","#0099CC"};
     @BindingAdapter("drawMktcapChart")
     public static void drawMktcapChart(PieChart chart, List<Double> list){
         ArrayList<PieEntry> entries = new ArrayList<>();
@@ -30,9 +31,9 @@ public class MktcapFragmentBindAdapter {
         dataSet.setDrawValues(false);
         dataSet.setSelectionShift(10f);
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#CC3399"));
-        colors.add(Color.parseColor("#99CC00"));
-        colors.add(Color.parseColor("#0099CC"));
+        colors.add(Color.parseColor(COLORS[0]));
+        colors.add(Color.parseColor(COLORS[1]));
+        colors.add(Color.parseColor(COLORS[2]));
         dataSet.setColors(colors);
 
         PieData data = new PieData(dataSet);

@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.models.LoadingState;
@@ -58,7 +60,9 @@ public class MainFragmentBindAdapter {
     public static void showLoading(ColorfulLoading loading, LoadingState state){
         if (state == LoadingState.LODING){
             loading.setVisibility(View.VISIBLE);
+            //loading.startAnimation(AnimationUtils.loadAnimation(BethApplication.getContext(),R.anim.scale_in_anim));
         }else{
+            //loading.startAnimation(AnimationUtils.loadAnimation(BethApplication.getContext(),R.anim.scale_out_anim));
             loading.setVisibility(View.GONE);
         }
     }
@@ -85,6 +89,7 @@ public class MainFragmentBindAdapter {
         switch (state){
             case LODING:
             case LOADING_FAILED:
+            case LOADING_NO_DATA:
                 rv.setVisibility(View.GONE);
                 break;
             case LOADING_SUCCEED:

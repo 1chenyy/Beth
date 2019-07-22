@@ -4,7 +4,10 @@ import android.text.SpannableString;
 
 import androidx.databinding.ObservableField;
 
-public class BlockDetailsDataBinding {
+import com.chen.beth.Utils.BaseUtil;
+import com.chen.beth.models.HashEditable;
+
+public class BlockDetailsDataBinding{
     public String number ;
     public String time ;
     public String txs ;
@@ -37,4 +40,6 @@ public class BlockDetailsDataBinding {
         this.extra = extra;
         this.hash = hash;
     }
+
+
 }

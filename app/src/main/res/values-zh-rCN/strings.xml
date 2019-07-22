@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Beth</string>
-    <string name="menu_search">搜索</string>
+    <string name="menu_search">查询</string>
     <string name="menu_home">主页</string>
     <string name="menu_favorite">收藏</string>
     <string name="menu_blocks">区块链</string>
@@ -67,4 +67,24 @@
     <string name="error_hash">请输入正确的16进制字符</string>
     <string name="error_account_length">账户地址需要由40个字符组成！</string>
     <string name="dialog_title_miner_mark">账户别名</string>
+    <string name="tx_hash">交易Hash</string>
+    <string name="tx_time">交易时间</string>
+    <string name="tx_block">所在区块</string>
+    <string name="tx_from">发送方</string>
+    <string name="tx_to">接收方</string>
+    <string name="tx_value">交易金额</string>
+    <string name="tx_gas">Gas</string>
+    <string name="tx_gas_price">Gas价格</string>
+    <string name="tx_nonce">Nonce</string>
+    <string name="tx_index">索引位置</string>
+    <string name="tx_r">r</string>
+    <string name="tx_s">s</string>
+    <string name="tx_v">v</string>
+    <string name="tx_input">交易输入</string>
+    <string name="tx_fee">手续费</string>
+    <string name="label_transaction_result">交易查询结果</string>
+    <string name="bt_search_no_data">查询的数据不存在</string>
+    <string name="history_tx">交易：</string>
+    <string name="history_account">账户：</string>
+    <string name="history_block">区块：</string>
 </resources>

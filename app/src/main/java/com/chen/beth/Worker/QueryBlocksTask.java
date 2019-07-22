@@ -60,7 +60,7 @@ public class QueryBlocksTask extends IntentService {
     }
 
     private void saveData(List<BlockSummaryBean> list){
-        BethApplication.getBlockData().getBlockDao().insertBlocks(list);
+        BethApplication.getDBData().getBlockDao().insertBlocks(list);
     }
 
     private void handleQueryLatest15Blocks(){

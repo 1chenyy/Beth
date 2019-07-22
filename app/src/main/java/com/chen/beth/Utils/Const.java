@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 public class Const {
     public static final String BETH_BASE_URL = "http://www.beth.gq:8080/v1/";
-    public static final String ETHERSCAN_PROXY_BASE_URL = "http://api.etherscan.io/api";
+    public static final String ETHERSCAN_PROXY_BASE_URL = "http://api.etherscan.io/";
     public static final String ETHERSCAN_PROXY_MODULE = "proxy";
     public static final String ETHERSCAN_PROXY_ACTION_GETTXS = "eth_getTransactionByHash";
     public static final int RESULT_SUCCESS = 1;
@@ -26,4 +26,5 @@ public class Const {
     public static final String ARG_TYPE = "type";
     public static final String ARG_TRANSITION_NAME = "name";
     public static final String ARG_SRC = "src";
+    public static final String ARG_ARG = "arg";
 }

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:translationZ="6dp"
+        android:translationZ="4dp"
         android:background="@drawable/item_ripple"
 
         >

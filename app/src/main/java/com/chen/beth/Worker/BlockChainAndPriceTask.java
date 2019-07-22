@@ -148,7 +148,7 @@ public class BlockChainAndPriceTask extends IntentService {
         int netStart = 0;
         if (start == 0) {
             LogUtil.d(this.getClass(), "开始从数据库取最近15个区块");
-            BlockSummaryBean[] result = BethApplication.getBlockData().getBlockDao().queryLatest15Blocks();
+            BlockSummaryBean[] result = BethApplication.getDBData().getBlockDao().queryLatest15Blocks();
             for (BlockSummaryBean bean : result) {
                 list.add(bean);
             }
@@ -158,7 +158,7 @@ public class BlockChainAndPriceTask extends IntentService {
                 LogUtil.d(this.getClass(), "数据库中区块不足15个，从" + netStart + "开始从网络查询");
             }
         } else {
-            BlockDao blockDao = BethApplication.getBlockData().getBlockDao();
+            BlockDao blockDao = BethApplication.getDBData().getBlockDao();
             LogUtil.d(this.getClass(), "从" + start + "开始从数据库取10个区块");
             for (int i = 0; i < 10; i++) {
                 BlockSummaryBean[] temp = blockDao.getBlockSummaryByNumber(start);
@@ -275,7 +275,7 @@ public class BlockChainAndPriceTask extends IntentService {
 
 
     private void saveData(List<BlockSummaryBean> list) {
-        BethApplication.getBlockData().getBlockDao().insertBlocks(list);
+        BethApplication.getDBData().getBlockDao().insertBlocks(list);
     }
 
 

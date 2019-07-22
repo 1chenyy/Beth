@@ -11,10 +11,13 @@ import androidx.navigation.NavAction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,26 +25,38 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.chen.beth.BaseFragment;
+import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
+import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Utils.PreferenceUtil;
+import com.chen.beth.Worker.SearchTask;
 import com.chen.beth.databinding.FragmentSearchBinding;
 import com.chen.beth.models.MinerMark;
+import com.chen.beth.models.SearchHistory;
+import com.chen.beth.ui.ItemOffsetDecoration;
+import com.chen.beth.ui.RVItemClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import io.reactivex.Observable;
+import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment implements RVItemClickListener {
     private FragmentSearchBinding binding;
-
+    private RecyclerView rv;
+    private RVHistoryAdapter adapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -54,29 +69,30 @@ public class SearchFragment extends BaseFragment {
         binding = FragmentSearchBinding.inflate(inflater,container,false);
         binding.setLifecycleOwner(this);
         binding.setHandle(this);
+        configRecycleView();
         return binding.getRoot();
+    }
+
+    private void configRecycleView() {
+        rv = binding.rvHistory;
+        rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        rv.setItemAnimator(new ScaleInTopAnimator());
+        rv.addItemDecoration(new ItemOffsetDecoration());
+        adapter = new RVHistoryAdapter();
+        adapter.setListener(this);
+        rv.setAdapter(adapter);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        binding.cardTx.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.search_card_anim));
-//        binding.cardAccount.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.search_card_anim));
-//        binding.cardBlock.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.search_card_anim));
         binding.rvHistory.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.alpha_in_anim));
         binding.tvHistory.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.alpha_in_anim));
-
+        SearchTask.startQueryAllHistory(BethApplication.getContext());
     }
 
     public void onCardClick(View view){
-//        if (view.getId()==R.id.card_account){
-//            FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-//                    .addSharedElement(view.findViewById(R.id.iv_account),getString(R.string.shared_element_search_account))
-//                    .build();
-//            Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_searchResultFragment,
-//                    null,null,extras);
-//            return;
-//        }
         showEditDialog(view.getId(),view);
     }
 
@@ -109,7 +125,7 @@ public class SearchFragment extends BaseFragment {
         Button searchButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
 
         searchButton.setOnClickListener(v->{
-            String str = editText.getText().toString();
+            String str = editText.getText().toString().trim().toLowerCase();
             String longHex = "\\b0x[0-9a-fA-F]+\\b";
             String shortHex = "\\b[0-9a-fA-F]+\\b";
             switch (type){
@@ -122,8 +138,6 @@ public class SearchFragment extends BaseFragment {
                             editText.setError(BaseUtil.getString(R.string.error_hash));
                             break;
                         }
-                        dialog.dismiss();
-
                     }else{
                         if (str.length()!=64){
                             editText.setError(BaseUtil.getString(R.string.err_tx_length));
@@ -132,7 +146,10 @@ public class SearchFragment extends BaseFragment {
                             editText.setError(BaseUtil.getString(R.string.error_hash));
                             break;
                         }
+                        str = "0x"+str;
                     }
+                    dialog.dismiss();
+                    jump(Const.TYPE_TX,R.id.iv_tx,nav,str);
                     break;
                 case R.id.card_account:
                     if (!TextUtils.isDigitsOnly(str)){
@@ -140,7 +157,7 @@ public class SearchFragment extends BaseFragment {
                         break;
                     }
                     dialog.dismiss();
-                    jump(Const.TYPE_ACCOUNT,R.id.iv_account,nav,R.drawable.ic_account);
+
                     break;
                 case R.id.card_block:
                     if (str.startsWith("0x")){
@@ -166,20 +183,39 @@ public class SearchFragment extends BaseFragment {
         });
     }
 
-    public void jump(int type,int id,View view,int src){
+    public void jump(int type,int id,View view,String arg){
         Bundle bundle = new Bundle();
-        bundle.putInt(Const.ARG_TYPE,type);
         ImageView sharedView = view.findViewById(id);
-        bundle.putString(Const.ARG_TRANSITION_NAME,sharedView.getTransitionName());
-        bundle.putSerializable(Const.ARG_SRC,src);
+        bundle.putString(Const.ARG_ARG,arg);
         FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                 .addSharedElement(sharedView,sharedView.getTransitionName()).build();
-        Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_searchResultFragment,
-                bundle,null,extras);
+        switch (type){
+            case Const.TYPE_TX:
+                Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_transactionResultFragment,
+                        bundle,null,extras);
+                break;
+        }
     }
 
-    @Subscribe
-    public void event(Float f){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHistoryEvent(SearchHistory[] event){
+        if (event.length!=0){
+            adapter.initList(event);
+        }
+    }
 
+    @Override
+    public void onItemClick(int pos) {
+        SearchHistory history = adapter.getHistory(pos);
+
+        switch(history.type){
+            case Const.TYPE_TX:
+                jump(Const.TYPE_TX,R.id.iv_tx,binding.cardTx,history.content);
+                break;
+            case Const.TYPE_ACCOUNT:
+                break;
+            case Const.TYPE_BLOCK:
+                break;
+        }
     }
 }

@@ -28,4 +28,7 @@ public interface SearchHistoryDao {
 
     @Query("select count(*) from search_history")
     int getCount();
+
+    @Query("select * from search_history where type=:type and content=:content")
+    SearchHistory[] querySameHistory(int type,String content);
 }
