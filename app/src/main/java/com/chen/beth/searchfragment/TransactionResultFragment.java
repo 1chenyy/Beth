@@ -22,7 +22,6 @@ import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.ConvertUtil;
-import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.SearchTask;
 import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentTransactionResultBinding;
@@ -37,14 +36,13 @@ import com.tencent.mmkv.MMKV;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Entity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TransactionResultFragment extends BaseFragment {
     private FragmentTransactionResultBinding binding;
-    private SearchResultViewModel viewModel;
+    private TransactionResultViewModel viewModel;
     private String arg;
 
     public TransactionResultFragment() {
@@ -62,7 +60,7 @@ public class TransactionResultFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTransactionResultBinding.inflate(inflater,container,false);
-        viewModel = ViewModelProviders.of(this).get(SearchResultViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(TransactionResultViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setData(viewModel);
         binding.setHandler(this);
@@ -83,7 +81,7 @@ public class TransactionResultFragment extends BaseFragment {
             }else{
                 viewModel.raw.setValue(event.result);
                 viewModel.state.setValue(LoadingState.LOADING_SUCCEED);
-                viewModel.hash.setValue(BaseUtil.omitHashString(event.result.hash,8));
+                viewModel.hash.setValue(BaseUtil.omitMinerString(event.result.hash,8));
                 viewModel.block.setValue(ConvertUtil.HexStringToLong(event.result.blockNumber)+"");
                 if (TextUtils.isEmpty(event.result.time)){
                     SearchTask.startSearchBlockByNumber(BethApplication.getContext(), (int) ConvertUtil.HexStringToLong(event.result.blockNumber),false);
@@ -120,6 +118,10 @@ public class TransactionResultFragment extends BaseFragment {
     }
 
     public void onTextClick(View v,String info){
+        if (v.getId()==R.id.tv_input_content){
+            showInputData(info);
+            return;
+        }
         BlockDetails.showHashSnackBar(binding.getRoot(),info,getContext());
     }
 
@@ -131,66 +133,31 @@ public class TransactionResultFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMarkEvent(MinerMark mark){
         switch (mark.id){
-            case R.id.tv_from_content:
+            case R.id.ib_from_miner:
                 viewModel.from.setValue(BaseUtil.omitMinerString(mark.hash,6));
                 break;
-            case R.id.tv_to_content:
+            case R.id.ib_to_miner:
                 viewModel.to.setValue(BaseUtil.omitMinerString(mark.hash,6));
                 break;
-            case R.id.tv_hash_content:
+            case R.id.ib_hash:
                 viewModel.hash.setValue(BaseUtil.omitMinerString(mark.hash,6));
                 break;
         }
     }
 
     public void onMarkClick(View v,String hash){
-        showMarkDialog(v.getId(),hash);
+        SearchBindingAdapter.showMarkDialog(getContext(),v.getId(),hash);
     }
 
-    private void showMarkDialog(int id,String hash) {
+
+
+    private void showInputData(String data){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_miner_mark_layout,null);
-        TextInputLayout textInputLayout = view.findViewById(R.id.edit_layout);
-        textInputLayout.setCounterMaxLength(20);
-        textInputLayout.setCounterEnabled(true);
-        textInputLayout.setHint(BaseUtil.getString(R.string.miner_mark_hint));
-        TextInputEditText editText = view.findViewById(R.id.et_miner);
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length()>textInputLayout.getCounterMaxLength()){
-                    textInputLayout.setError(BaseUtil.getString(R.string.edit_warn));
-                }
-            }
-        });
-        builder.setTitle(R.string.dialog_title_miner_mark);
-        builder.setView(view);
-        builder.setPositiveButton(BaseUtil.getString(R.string.bt_mark), (d, w)->{
-            String s = editText.getText().toString().trim();
-            if (TextUtils.isEmpty(s)){
-                BaseUtil.showToast(BaseUtil.getString(R.string.info_no_input));
-            }else{
-                MMKV.defaultMMKV().encode(hash,s);
-                EventBus.getDefault().post(new MinerMark());
-            }
-        });
-        builder.setNegativeButton(BaseUtil.getString(R.string.bt_remove),(d,w)->{
-            MMKV.defaultMMKV().removeValueForKey(hash);
-            EventBus.getDefault().post(new MinerMark());
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setEnabled(MMKV.defaultMMKV().contains(hash));
+        builder.setTitle(R.string.tx_input);
+        builder.setMessage(data);
+        builder.setPositiveButton(R.string.bt_return,null);
+        builder.setNegativeButton(R.string.info_copy,(d,w)->BlockDetails.copy(getContext(),data));
+        builder.create().show();
     }
 
     @Override

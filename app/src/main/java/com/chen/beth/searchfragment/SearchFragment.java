@@ -152,31 +152,34 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
                     jump(Const.TYPE_TX,R.id.iv_tx,nav,str);
                     break;
                 case R.id.card_account:
-                    if (!TextUtils.isDigitsOnly(str)){
-                        editText.setError(BaseUtil.getString(R.string.error_block));
-                        break;
-                    }
+//                    if (str.startsWith("0x")){
+//                        if (str.length()!=42){
+//                            editText.setError(BaseUtil.getString(R.string.error_account_length));
+//                            break;
+//                        }else if(!str.matches(longHex)){
+//                            editText.setError(BaseUtil.getString(R.string.error_hash));
+//                            break;
+//                        }
+//                    }else{
+//                        if (str.length()!=40){
+//                            editText.setError(BaseUtil.getString(R.string.error_account_length));
+//                            break;
+//                        }else if(!str.matches(shortHex)){
+//                            editText.setError(BaseUtil.getString(R.string.error_hash));
+//                            break;
+//                        }
+//                    }
+                    jump(Const.TYPE_ACCOUNT,R.id.iv_account,nav,str);
                     dialog.dismiss();
 
                     break;
                 case R.id.card_block:
-                    if (str.startsWith("0x")){
-                        if (str.length()!=42){
-                            editText.setError(BaseUtil.getString(R.string.error_account_length));
-                            break;
-                        }else if(!str.matches(longHex)){
-                            editText.setError(BaseUtil.getString(R.string.error_hash));
-                            break;
-                        }
-                    }else{
-                        if (str.length()!=40){
-                            editText.setError(BaseUtil.getString(R.string.error_account_length));
-                            break;
-                        }else if(!str.matches(shortHex)){
-                            editText.setError(BaseUtil.getString(R.string.error_hash));
-                            break;
-                        }
+                    if (!TextUtils.isDigitsOnly(str) || TextUtils.isEmpty(str) || Integer.parseInt(str)<0){
+                        editText.setError(BaseUtil.getString(R.string.error_block));
+                        break;
                     }
+                    dialog.dismiss();
+                    jump(Const.TYPE_BLOCK,R.id.iv_block,nav,str);
                     break;
             }
 
@@ -192,6 +195,14 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
         switch (type){
             case Const.TYPE_TX:
                 Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_transactionResultFragment,
+                        bundle,null,extras);
+                break;
+            case Const.TYPE_ACCOUNT:
+                Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_accountResultFragment,
+                        bundle,null,extras);
+                    break;
+            case Const.TYPE_BLOCK:
+                Navigation.findNavController(view).navigate(R.id.action_searchFragment_to_blockResulFragment,
                         bundle,null,extras);
                 break;
         }
@@ -215,6 +226,7 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
             case Const.TYPE_ACCOUNT:
                 break;
             case Const.TYPE_BLOCK:
+                jump(Const.TYPE_BLOCK,R.id.iv_block,binding.cardBlock,history.content);
                 break;
         }
     }

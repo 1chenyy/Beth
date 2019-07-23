@@ -46,7 +46,8 @@
     <string name="shared_element_mktcap" translatable="false">mktcap</string>
     <string name="shared_element_search_tx" translatable="false">search_tx</string>
     <string name="shared_element_search_account" translatable="false">search_account</string>
-    <string name="shared_element_search_block" translatable="false">search_block</string>
+    <string name="shared_element_search_block" translatable="false">search_blocks</string>
+    <string name="shared_element_result_block" translatable="false">result_block</string>
     <string name="label_genesis">Genesis block</string>
     <string name="label_block">Block reward</string>
     <string name="label_uncle">UncleBlock reward</string>
@@ -112,5 +113,9 @@
     <string name="history_tx">"Transaction : "</string>
     <string name="history_account">"Account : "</string>
     <string name="history_block">"Block : "</string>
+    <string name="miner_none">None</string>
+    <string name="labe_block_result">Block Result</string>
+    <string name="detail_number">Number</string>
+    <string name="block_no_tx">There are no transactions on the block</string>
 
 </resources>

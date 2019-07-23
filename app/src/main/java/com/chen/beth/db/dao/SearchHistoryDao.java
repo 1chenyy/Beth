@@ -17,7 +17,7 @@ public interface SearchHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertHistories(SearchHistory... histories);
 
-    @Query("select * from search_history")
+    @Query("select * from search_history order by id desc")
     SearchHistory[] getAll();
 
     @Query("select * from search_history limit 10 offset :offset")

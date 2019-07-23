@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="com.chen.beth.models.LoadingState" />
+        <import type="android.view.View" />
+
+        <variable
+            name="handler"
+            type="com.chen.beth.searchfragment.BlockResultFragment" />
+
+        <variable
+            name="data"
+            type="com.chen.beth.searchfragment.BlockResultViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".searchfragment.AccountResultFragment">
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_block"
+                android:transitionName="@string/shared_element_result_block"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.chen.beth.ui.ColorfulLoading
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:isShowLoading="@{data.state}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/primary_dark_ripple"
+                android:onClick="@{handler::onRefreshClick}"
+                android:padding="8dp"
+                android:textColor="@android:color/white"
+                android:translationZ="6dp"
+                app:isShowSearchBT="@{data.state}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:background="@drawable/main_linearlayout_bg"
+                android:paddingLeft="8dp"
+                android:paddingBottom="16dp"
+                android:translationZ="4dp"
+                app:isShowContentView="@{data.state}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.25" />
+
+                <TextView
+                    android:id="@+id/tv_number_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_number"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_number_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.number}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_time_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_time"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_number_title" />
+
+
+                <TextView
+                    android:id="@+id/tv_time_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.time}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_number_content" />
+
+                <TextView
+                    android:id="@+id/tv_tx_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_tx"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time_title" />
+
+                <TextView
+                    android:id="@+id/tv_tx_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.txs}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time_content" />
+
+                <TextView
+                    android:id="@+id/tv_miner_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_miner"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_tx_title" />
+
+                <TextView
+                    android:id="@+id/tv_miner_content"
+                    style="@style/DetailsTvContent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{v->handler.onTextClick(v,data.raw.miner)}"
+                    android:text="@{data.miner}"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_tx_content" />
+
+                <ImageButton
+                    android:id="@+id/ib_miner_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{v->handler.onMarkClick(v,data.raw.miner)}"
+                    android:src="@drawable/ic_edit"
+                    app:layout_constraintLeft_toRightOf="@id/tv_miner_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_tx_content" />
+
+                <TextView
+                    android:id="@+id/tv_reward_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_reward"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_miner_title" />
+
+                <TextView
+                    android:id="@+id/tv_reward_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.reward}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_miner_content" />
+
+                <TextView
+                    android:id="@+id/tv_uncle_reward_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_block_uncle_reward"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_reward_title" />
+
+                <TextView
+                    android:id="@+id/tv_uncle_reward_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.uncleReward}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_reward_content" />
+
+                <TextView
+                    android:id="@+id/tv_difficulty_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_difficult"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_uncle_reward_title" />
+
+                <TextView
+                    android:id="@+id/tv_difficulty_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.difficult}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_uncle_reward_content" />
+
+                <TextView
+                    android:id="@+id/tv_total_difficulty_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_total_difficule"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_difficulty_title" />
+
+                <TextView
+                    android:id="@+id/tv_total_difficulty_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.totalDifficult}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_difficulty_content" />
+
+                <TextView
+                    android:id="@+id/tv_size_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_total_difficulty_title" />
+
+                <TextView
+                    android:id="@+id/tv_size_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.size}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_total_difficulty_content" />
+
+                <TextView
+                    android:id="@+id/tv_gas_used_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_gas_used"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_size_title" />
+
+                <TextView
+                    android:id="@+id/tv_gas_used_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.gasUsed}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_size_content" />
+
+                <TextView
+                    android:id="@+id/tv_gas_limit_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_gas_limit"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gas_used_title" />
+
+                <TextView
+                    android:id="@+id/tv_gas_limit_content"
+                    style="@style/DetailsTvContent"
+                    android:text="@{data.gasLimit}"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gas_used_content" />
+
+                <TextView
+                    android:id="@+id/tv_extra_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="@string/detail_extra"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gas_limit_title" />
+
+                <TextView
+                    android:id="@+id/tv_extra_content"
+                    style="@style/DetailsTvContent"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="@{data.extra}"
+                    android:textIsSelectable="true"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gas_limit_content" />
+
+                <TextView
+                    android:id="@+id/tv_hash_title"
+                    style="@style/DetailsTVTitle"
+                    android:text="Hash"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_extra_title" />
+
+                <TextView
+                    android:id="@+id/tv_hash_content"
+                    style="@style/DetailsTvContent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:onClick="@{v->handler.onTextClick(v,data.raw.hash)}"
+                    android:text="@{data.hash}"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintLeft_toRightOf="@id/guideline"
+                    app:layout_constraintTop_toBottomOf="@id/tv_extra_content" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_txs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:isShowContentView="@{data.stateTxs}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail" />
+
+            <Button
+                android:id="@+id/bt_txs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/primary_dark_ripple"
+                android:onClick="@{handler::onTxRefreshClick}"
+                android:padding="8dp"
+                android:text="@string/main_bt_no_date_refresh"
+                android:textColor="@android:color/white"
+                android:translationZ="6dp"
+                android:visibility="@{data.stateTxs==LoadingState.LOADING_FAILED?View.VISIBLE:View.GONE}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail" />
+
+            <TextView
+                android:id="@+id/tv_txs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/block_no_tx"
+                android:textSize="16sp"
+                android:visibility="@{data.stateTxs==LoadingState.LOADING_NO_DATA?View.VISIBLE:View.GONE}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

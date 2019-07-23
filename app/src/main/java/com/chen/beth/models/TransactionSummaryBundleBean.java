@@ -2,7 +2,7 @@ package com.chen.beth.models;
 
 import java.util.List;
 
-public class TransactionBundleBean {
+public class TransactionSummaryBundleBean {
 
     /**
      * status : 1
@@ -15,6 +15,6 @@ public class TransactionBundleBean {
     public String error;
 
     public static class ResultBean {
-        public List<TransactionBean> txs;
+        public List<TransactionSummaryBean> txs;
     }
 }

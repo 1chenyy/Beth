@@ -6,7 +6,7 @@ import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.OneBlockSummaryBean;
 import com.chen.beth.models.PriceAndMktcapBean;
-import com.chen.beth.models.TransactionBundleBean;
+import com.chen.beth.models.TransactionSummaryBundleBean;
 
 import io.reactivex.Maybe;
 import retrofit2.Call;
@@ -69,8 +69,8 @@ public interface BethAPIServices {
     Call<MainFragmentBlockBundleBean> getOnePageBlocks(@Path("num")int num);
 
     @GET("gettransactionsbynum/{num}")
-    Call<TransactionBundleBean> getTransactionsByNumber(@Path("num")int num);
+    Maybe<TransactionSummaryBundleBean> getTransactionSummaryByNumber(@Path("num")int num);
 
     @GET("getblockbynum/{num}")
-    Maybe<OneBlockSummaryBean> getBlockByNumber(@Path("num")int num);
+    Maybe<OneBlockSummaryBean> getBlockByNumber(@Path("num")String num);
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".searchfragment.AccountResultFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:src="@drawable/ic_account"
+        android:text="@string/hello_blank_fragment"
+        android:transitionName="@string/shared_element_search_account" />
+
+</FrameLayout>

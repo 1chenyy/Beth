@@ -9,7 +9,7 @@
         android:id="@+id/mainFragment"
         android:name="com.chen.beth.mainfragment.MainFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_priceFragment"
             app:destination="@id/priceFragment" />
@@ -33,18 +33,36 @@
     <fragment
         android:id="@+id/blockChainFragment"
         android:name="com.chen.beth.blockchainfragment.BlockChainFragment"
+        tools:layout="@layout/fragment_block_chain"
         android:label="@string/label_block_chain" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.chen.beth.searchfragment.SearchFragment"
         android:label="@string/menu_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_transactionResultFragment"
             app:destination="@id/transactionResultFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_accountResultFragment"
+            app:destination="@id/accountResultFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_blockResulFragment"
+            app:destination="@id/blockResulFragment" />
     </fragment>
     <fragment
         android:id="@+id/transactionResultFragment"
         android:name="com.chen.beth.searchfragment.TransactionResultFragment"
-        android:label="@string/label_transaction_result" />
+        android:label="@string/label_transaction_result"
+        tools:layout="@layout/fragment_transaction_result" />
+    <fragment
+        android:id="@+id/accountResultFragment"
+        android:name="com.chen.beth.searchfragment.AccountResultFragment"
+        android:label="fragment_account_result"
+        tools:layout="@layout/fragment_account_result" />
+    <fragment
+        android:id="@+id/blockResulFragment"
+        android:name="com.chen.beth.searchfragment.BlockResultFragment"
+        android:label="@string/labe_block_result"
+        tools:layout="@layout/fragment_block_result" />
 </navigation>

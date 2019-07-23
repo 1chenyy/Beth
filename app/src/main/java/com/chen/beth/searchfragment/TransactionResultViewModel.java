@@ -9,7 +9,7 @@ import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.TransactionBean;
 import com.chen.beth.models.TransactionDetailBean;
 
-public class SearchResultViewModel extends ViewModel  {
+public class TransactionResultViewModel extends ViewModel  {
     public MutableLiveData<LoadingState> state = new MutableLiveData<>();
     public MutableLiveData<TransactionBean> raw = new MutableLiveData<TransactionBean>();
     public MutableLiveData<String> hash = new MutableLiveData();
@@ -27,7 +27,7 @@ public class SearchResultViewModel extends ViewModel  {
     public MutableLiveData<String> s = new MutableLiveData();
     public MutableLiveData<String> v = new MutableLiveData();
 
-    public SearchResultViewModel(){
+    public TransactionResultViewModel(){
         state.setValue(LoadingState.LODING);
     }
 

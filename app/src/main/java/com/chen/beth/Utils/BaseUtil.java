@@ -197,6 +197,9 @@ public class BaseUtil {
     }
 
     public static String omitMinerString(String miner,int reserveLen){
+        if (TextUtils.isEmpty(miner)){
+            return getString(R.string.miner_none);
+        }
         String name = MMKV.defaultMMKV().decodeString(miner,"");
         if (!TextUtils.isEmpty(name)){
             if (name.length()<=20){

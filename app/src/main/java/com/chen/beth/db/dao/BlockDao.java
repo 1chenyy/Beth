@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface BlockDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertBlocks(List<BlockSummaryBean> blocks);
+    public void insertBlocks(List<BlockSummaryBean> list);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertBlock(BlockSummaryBean... blocks);
