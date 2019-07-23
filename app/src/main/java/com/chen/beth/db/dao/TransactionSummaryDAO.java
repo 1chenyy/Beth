@@ -18,8 +18,8 @@ public interface TransactionSummaryDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTransaction(TransactionSummaryBean... list);
 
-    @Query("select * from transaction_summary where number = :number")
-    TransactionSummaryBean[] getTransactionByNumber(int number);
+    @Query("select * from transaction_summary where number = :number limit 10 offset :offset")
+    TransactionSummaryBean[] getTransactionByNumber(int number,int offset);
 
     @Query("delete from transaction_summary")
     void deleteAll();

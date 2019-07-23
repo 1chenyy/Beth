@@ -71,6 +71,9 @@ public class TransactionResultFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SearchTask.startSearchTransaction(BethApplication.getContext(),arg);
+        postponeEnterTransition();
+        binding.iv.setTransitionName(BaseUtil.getString(R.string.shared_element_search_tx));
+        startPostponedEnterTransition();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -64,5 +64,9 @@
         android:id="@+id/blockResulFragment"
         android:name="com.chen.beth.searchfragment.BlockResultFragment"
         android:label="@string/labe_block_result"
-        tools:layout="@layout/fragment_block_result" />
+        tools:layout="@layout/fragment_block_result" >
+        <action
+            android:id="@+id/action_blockResulFragment_to_transactionResultFragment"
+            app:destination="@id/transactionResultFragment" />
+    </fragment>
 </navigation>

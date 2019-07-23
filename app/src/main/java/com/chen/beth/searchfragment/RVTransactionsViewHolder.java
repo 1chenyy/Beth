@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chen.beth.databinding.RvItemTransactionsBinding;
+import com.chen.beth.ui.RVItemClickListener;
 
 public class RVTransactionsViewHolder extends RecyclerView.ViewHolder {
     public RvItemTransactionsBinding binding;
-    public RVTransactionsViewHolder(@NonNull RvItemTransactionsBinding binding) {
+    public RVTransactionsViewHolder(@NonNull RvItemTransactionsBinding binding, RVItemClickListener listener) {
         super(binding.getRoot());
         this.binding = binding;
+        binding.getRoot().setOnClickListener(v->listener.onItemClick(v,getAdapterPosition()));
     }
 
     public void bind(TransactionSummaryDataBinding data){

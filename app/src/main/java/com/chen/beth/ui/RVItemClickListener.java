@@ -6,4 +6,7 @@ import com.chen.beth.models.BlockSummaryBean;
 
 public interface RVItemClickListener {
     public void onItemClick(int pos);
+    default public void onItemClick(View view,int pos){
+
+    };
 }

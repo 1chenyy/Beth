@@ -146,7 +146,7 @@ public class SearchTask extends IntentService {
 
     private void handleQueryBlockTransactions(int number) {
         LogUtil.d(this.getClass(),"开始从数据库查询区块"+number+"内交易");
-        TransactionSummaryBean[] result = BethApplication.getDBData().getTransactionSummaryDAO().getTransactionByNumber(number);
+        TransactionSummaryBean[] result = BethApplication.getDBData().getTransactionSummaryDAO().getTransactionByNumber(number,0);
         if (result.length!=0){
             TransactionSummaryBundleBean bean = new TransactionSummaryBundleBean();
             bean.status = Const.RESULT_SUCCESS;
@@ -174,6 +174,8 @@ public class SearchTask extends IntentService {
                 }
                 LogUtil.d(this.getClass(),"查询成功开始缓存: "+bean.result.txs.size());
                 BethApplication.getDBData().getTransactionSummaryDAO().insertTransactions(bean.result.txs);
+                if (bean.result.txs.size()>10)
+                    bean.result.txs = bean.result.txs.subList(0,10);
                 bean.status = Const.RESULT_SUCCESS;
             }else{
                 bean.status = Const.RESULT_NO_DATA;
