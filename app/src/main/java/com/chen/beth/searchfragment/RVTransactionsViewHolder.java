@@ -14,6 +14,7 @@ public class RVTransactionsViewHolder extends RecyclerView.ViewHolder {
         super(binding.getRoot());
         this.binding = binding;
         binding.getRoot().setOnClickListener(v->listener.onItemClick(v,getAdapterPosition()));
+
     }
 
     public void bind(TransactionSummaryDataBinding data){

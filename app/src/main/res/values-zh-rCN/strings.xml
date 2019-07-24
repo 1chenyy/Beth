@@ -19,7 +19,7 @@
     <string name="main_top_no_data">暂无数据</string>
     <string name="main_top_no_network">没有网络连接</string>
     <string name="transaction_chart_title">以太坊近期交易量</string>
-    <string name="main_bt_no_date_refresh">暂无数据点击刷新</string>
+    <string name="main_bt_no_date_refresh">暂无数据点击重试</string>
     <string name="main_bt_more">查看全部区块</string>
     <string name="block_info_numer">区块高度：</string>
     <string name="block_info_miner">矿工：</string>
@@ -91,4 +91,17 @@
     <string name="detail_number">区块高度</string>
     <string name="detail_time">出块时间</string>
     <string name="block_no_tx">该区块没有任何交易</string>
+    <string name="block_result_from">发送地址</string>
+    <string name="block_result_to">接收地址</string>
+    <string name="delete_all_title">删除所有历史记录</string>
+    <string name="delete_adll_title_content">是否要删除所有历史记录？</string>
+    <string name="delete_all_ok">删除</string>
+    <string name="delete_all_cancel">取消</string>
+    <string name="no_history">暂无历史记录</string>
+    <string name="account_balance">账户余额</string>
+    <string name="account_detail">账户详情</string>
+    <string name="refresh">刷新</string>
+    <string name="account_block">所挖区块</string>
+    <string name="account_transaction">相关交易</string>
+    <string name="no_content">暂无相关内容</string>
 </resources>

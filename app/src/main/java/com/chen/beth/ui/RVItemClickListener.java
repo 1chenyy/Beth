@@ -5,8 +5,12 @@ import android.view.View;
 import com.chen.beth.models.BlockSummaryBean;
 
 public interface RVItemClickListener {
-    public void onItemClick(int pos);
-    default public void onItemClick(View view,int pos){
+    void onItemClick(int pos);
+    default void onItemClick(View view,int pos){
 
     };
+
+    default void onDeleteClick(int pos){
+
+    }
 }

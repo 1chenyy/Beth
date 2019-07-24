@@ -14,6 +14,7 @@ public class RVHistoryViewHolder extends RecyclerView.ViewHolder {
         super(binding.getRoot());
         this.binding = binding;
         binding.getRoot().setOnClickListener(v->listener.onItemClick(getAdapterPosition()));
+        binding.ibDelete.setOnClickListener(v->listener.onDeleteClick(getAdapterPosition()));
     }
 
     public void bind(SearchHistoryDataBinding dataBinding){

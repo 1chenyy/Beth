@@ -83,7 +83,7 @@
     <string name="search_transaction">Transaction query</string>
     <string name="search_account">Account query</string>
     <string name="search_block">Block query</string>
-    <string name="search_history">The historical record</string>
+    <string name="search_history">Historical</string>
     <string name="edit_warn">Do not input too much</string>
     <string name="hint_tx">Please input transaction hash</string>
     <string name="hint_account">Please input account address</string>
@@ -117,5 +117,18 @@
     <string name="labe_block_result">Block Result</string>
     <string name="detail_number">Number</string>
     <string name="block_no_tx">There are no transactions on the block</string>
+    <string name="block_result_from">From</string>
+    <string name="block_result_to">To</string>
+    <string name="delete_all_title">Delete all history</string>
+    <string name="delete_adll_title_content">Whether to delete all history？</string>
+    <string name="delete_all_ok">Delete</string>
+    <string name="delete_all_cancel">Cancel</string>
+    <string name="no_history">No historical records available</string>
+    <string name="account_balance">The account balance</string>
+    <string name="account_detail">Account detail</string>
+    <string name="refresh">Refresh</string>
+    <string name="account_block">Mined blocks</string>
+    <string name="account_transaction">Transactions</string>
+    <string name="no_content">No content</string>
 
 </resources>

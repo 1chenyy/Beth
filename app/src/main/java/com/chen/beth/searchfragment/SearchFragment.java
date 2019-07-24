@@ -1,6 +1,7 @@
 package com.chen.beth.searchfragment;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.navigation.NavAction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +42,7 @@ import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.SearchHistory;
 import com.chen.beth.ui.ItemOffsetDecoration;
 import com.chen.beth.ui.RVItemClickListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.tencent.mmkv.MMKV;
 
@@ -48,7 +51,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.Observable;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,6 +62,7 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
     private FragmentSearchBinding binding;
     private RecyclerView rv;
     private RVHistoryAdapter adapter;
+    private SearchFragmentDataBinding dataBinding;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -69,6 +75,9 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
         binding = FragmentSearchBinding.inflate(inflater,container,false);
         binding.setLifecycleOwner(this);
         binding.setHandle(this);
+        dataBinding = new SearchFragmentDataBinding();
+        dataBinding.hasHistory.set(false);
+        binding.setData(dataBinding);
         configRecycleView();
         return binding.getRoot();
     }
@@ -76,7 +85,7 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
     private void configRecycleView() {
         rv = binding.rvHistory;
         rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        rv.setItemAnimator(new ScaleInTopAnimator());
+        rv.setItemAnimator(new DefaultItemAnimator());
         rv.addItemDecoration(new ItemOffsetDecoration());
         adapter = new RVHistoryAdapter();
         adapter.setListener(this);
@@ -126,49 +135,35 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
 
         searchButton.setOnClickListener(v->{
             String str = editText.getText().toString().trim().toLowerCase();
+            str = str.replace(" ","");
             String longHex = "\\b0x[0-9a-fA-F]+\\b";
             String shortHex = "\\b[0-9a-fA-F]+\\b";
             switch (type){
                 case R.id.card_tx:
-                    if (str.startsWith("0x")){
-                        if (str.length()!=66){
-                            editText.setError(BaseUtil.getString(R.string.err_tx_length));
-                            break;
-                        }else if(!str.matches(longHex)){
-                            editText.setError(BaseUtil.getString(R.string.error_hash));
-                            break;
-                        }
-                    }else{
-                        if (str.length()!=64){
-                            editText.setError(BaseUtil.getString(R.string.err_tx_length));
-                            break;
-                        }else if(!str.matches(shortHex)){
-                            editText.setError(BaseUtil.getString(R.string.error_hash));
-                            break;
-                        }
+                    if (!str.startsWith("0x")){
                         str = "0x"+str;
+                    }
+                    if (str.length()!=66){
+                        editText.setError(BaseUtil.getString(R.string.err_tx_length));
+                        break;
+                    }else if(!str.matches(longHex)){
+                        editText.setError(BaseUtil.getString(R.string.error_hash));
+                        break;
                     }
                     dialog.dismiss();
                     jump(Const.TYPE_TX,R.id.iv_tx,nav,str);
                     break;
                 case R.id.card_account:
-//                    if (str.startsWith("0x")){
-//                        if (str.length()!=42){
-//                            editText.setError(BaseUtil.getString(R.string.error_account_length));
-//                            break;
-//                        }else if(!str.matches(longHex)){
-//                            editText.setError(BaseUtil.getString(R.string.error_hash));
-//                            break;
-//                        }
-//                    }else{
-//                        if (str.length()!=40){
-//                            editText.setError(BaseUtil.getString(R.string.error_account_length));
-//                            break;
-//                        }else if(!str.matches(shortHex)){
-//                            editText.setError(BaseUtil.getString(R.string.error_hash));
-//                            break;
-//                        }
-//                    }
+                    if (!str.startsWith("0x")){
+                        str = "0x"+str;
+                    }
+                    if (str.length()!=42){
+                        editText.setError(BaseUtil.getString(R.string.error_account_length));
+                        break;
+                    }else if(!str.matches(longHex)){
+                        editText.setError(BaseUtil.getString(R.string.error_hash));
+                        break;
+                    }
                     jump(Const.TYPE_ACCOUNT,R.id.iv_account,nav,str);
                     dialog.dismiss();
 
@@ -211,7 +206,14 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHistoryEvent(SearchHistory[] event){
         if (event.length!=0){
-            adapter.initList(event);
+            if (adapter.getItemCount()==0){
+                adapter.initList(event);
+                dataBinding.hasHistory.set(true);
+            }
+        }else{
+            if (adapter.getItemCount() == 0){
+                dataBinding.hasHistory.set(false);
+            }
         }
     }
 
@@ -224,10 +226,28 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
                 jump(Const.TYPE_TX,R.id.iv_tx,binding.cardTx,history.content);
                 break;
             case Const.TYPE_ACCOUNT:
+                jump(Const.TYPE_ACCOUNT,R.id.iv_account,binding.cardAccount,history.content);
                 break;
             case Const.TYPE_BLOCK:
                 jump(Const.TYPE_BLOCK,R.id.iv_block,binding.cardBlock,history.content);
                 break;
         }
+    }
+
+    @Override
+    public void onDeleteClick(int pos) {
+        adapter.deleteItem(pos);
+        dataBinding.hasHistory.set(adapter.getItemCount()!=0);
+    }
+
+    public void deleteAllHistory(View v){
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_all_title)
+                .setMessage(R.string.delete_adll_title_content)
+                .setPositiveButton(R.string.delete_all_ok,
+                        (d,w)->{adapter.deleteAll();dataBinding.hasHistory.set(false);})
+                .setNegativeButton(R.string.delete_all_cancel,null)
+                .create()
+                .show();
     }
 }

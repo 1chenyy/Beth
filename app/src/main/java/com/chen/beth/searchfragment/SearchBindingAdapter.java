@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 
+import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
@@ -54,7 +55,7 @@ public class SearchBindingAdapter {
                 tv.setText(R.string.history_tx);
                 break;
             case Const.TYPE_ACCOUNT:
-                tv.setTextColor(Color.parseColor("#66CCFF"));
+                tv.setTextColor(Color.parseColor("#009933"));
                 tv.setText(R.string.history_account);
                 break;
             case Const.TYPE_BLOCK:
@@ -71,10 +72,10 @@ public class SearchBindingAdapter {
                 tv.setText(BaseUtil.omitMinerString(data.content,8));
                 break;
             case Const.TYPE_ACCOUNT:
-                tv.setText(data.content);
+                tv.setText(BaseUtil.omitMinerString(data.content,8));
                 break;
             case Const.TYPE_BLOCK:
-                tv.setText(BaseUtil.omitMinerString(data.content,8));
+                tv.setText(data.content);
                 break;
         }
     }
@@ -85,6 +86,24 @@ public class SearchBindingAdapter {
             view.setVisibility(View.GONE);
         }else{
             view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @BindingAdapter("setBalance")
+    public static void setBalance(TextView tv,String str){
+        if (BaseUtil.getString(R.string.main_top_loading).equals(str)
+                || BaseUtil.getString(R.string.main_bt_no_date_refresh).equals(str)){
+            tv.setTypeface(null);
+        }else{
+            tv.setTypeface(BaseUtil.ACCOUNT_BALANCE_TYPEFACE);
+        }
+        tv.setText(str);
+        if (BaseUtil.getString(R.string.main_bt_no_date_refresh).equals(str)){
+            tv.setTextColor(BethApplication.getContext().getColor(R.color.colorPrimary));
+            tv.setEnabled(true);
+        }else{
+            tv.setTextColor(Color.BLACK);
+            tv.setEnabled(false);
         }
     }
 

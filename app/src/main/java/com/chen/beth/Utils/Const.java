@@ -4,9 +4,21 @@ import java.text.SimpleDateFormat;
 
 public class Const {
     public static final String BETH_BASE_URL = "http://www.beth.gq:8080/v1/";
-    public static final String ETHERSCAN_PROXY_BASE_URL = "https://api.etherscan.io/";
+
+    public static final String ETHERSCAN_BASE_URL = "https://api.etherscan.io/";
+
     public static final String ETHERSCAN_PROXY_MODULE = "proxy";
+    public static final String ETHERSCAN_ACCOUNT_MODULE = "account";
+
     public static final String ETHERSCAN_PROXY_ACTION_GETTXS = "eth_getTransactionByHash";
+    public static final String ETHERSCAN_ACCOUNT_ACTION_GETBALANCE = "balance";
+    public static final String ETHERSCAN_ACCOUNT_ACTION_GETTXS = "txlist";
+
+    public static final String ETHERSCAN_ACCOUNT_ARG_TAG = "latest";
+    public static final String ETHERSCAN_ACCOUNT_ARG_STRAT = "0";
+    public static final String ETHERSCAN_ACCOUNT_ARG_END = "99999999";
+    public static final int ETHERSCAN_ACCOUNT_ARG_OFFSET = 20;
+    public static final String ETHERSCAN_ACCOUNT_ARG_SORT = "desc";
     public static final int RESULT_SUCCESS = 1;
     public static final int RESULT_NO_DATA = 0;
     public static final int RESULT_NO_NET = -1;
@@ -27,4 +39,5 @@ public class Const {
     public static final String ARG_TRANSITION_NAME = "name";
     public static final String ARG_SRC = "src";
     public static final String ARG_ARG = "arg";
+    public static final String ARG_USER = "user";
 }

@@ -1,6 +1,7 @@
 package com.chen.beth.db.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -24,11 +25,14 @@ public interface SearchHistoryDao {
     SearchHistory[] getOnePage(int offset);
 
     @Query("delete from search_history")
-    void deleteAll();
+    int deleteAll();
 
     @Query("select count(*) from search_history")
     int getCount();
 
     @Query("select * from search_history where type=:type and content=:content")
     SearchHistory[] querySameHistory(int type,String content);
+
+    @Delete
+    int deleteItem(SearchHistory history);
 }

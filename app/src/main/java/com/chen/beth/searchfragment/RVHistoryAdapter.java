@@ -6,12 +6,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chen.beth.BethApplication;
 import com.chen.beth.databinding.RvItemHistoryBinding;
 import com.chen.beth.models.SearchHistory;
 import com.chen.beth.ui.RVItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 public class RVHistoryAdapter extends RecyclerView.Adapter<RVHistoryViewHolder> {
     private List<SearchHistory> list;
@@ -54,5 +58,23 @@ public class RVHistoryAdapter extends RecyclerView.Adapter<RVHistoryViewHolder> 
 
     public SearchHistory getHistory(int pos){
         return list.get(pos);
+    }
+
+    public void deleteItem(int pos){
+        SearchHistory history = list.remove(pos);
+        notifyItemRemoved(pos);
+        Observable.just(history)
+                .subscribeOn(Schedulers.io())
+                .map(h-> BethApplication.getDBData().getSearchHistoryDao().deleteItem(h))
+                .subscribe();
+    }
+
+    public void deleteAll(){
+        list.clear();
+        notifyDataSetChanged();
+        Observable.just(0)
+                .subscribeOn(Schedulers.io())
+                .map(i->BethApplication.getDBData().getSearchHistoryDao().deleteAll())
+                .subscribe();
     }
 }

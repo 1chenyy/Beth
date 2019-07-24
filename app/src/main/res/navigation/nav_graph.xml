@@ -58,8 +58,12 @@
     <fragment
         android:id="@+id/accountResultFragment"
         android:name="com.chen.beth.searchfragment.AccountResultFragment"
-        android:label="fragment_account_result"
-        tools:layout="@layout/fragment_account_result" />
+        android:label="@string/account_detail"
+        tools:layout="@layout/fragment_account_result" >
+        <action
+            android:id="@+id/action_accountResultFragment_to_transactionResultFragment"
+            app:destination="@id/transactionResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/blockResulFragment"
         android:name="com.chen.beth.searchfragment.BlockResultFragment"

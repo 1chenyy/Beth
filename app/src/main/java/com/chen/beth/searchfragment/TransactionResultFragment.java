@@ -9,9 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +27,7 @@ import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.OneBlockSummaryBean;
 import com.chen.beth.models.TransactionDetailBean;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.tencent.mmkv.MMKV;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -44,6 +38,7 @@ public class TransactionResultFragment extends BaseFragment {
     private FragmentTransactionResultBinding binding;
     private TransactionResultViewModel viewModel;
     private String arg;
+    private boolean isUser;
 
     public TransactionResultFragment() {
         // Required empty public constructor
@@ -54,6 +49,7 @@ public class TransactionResultFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         arg = bundle.getString(Const.ARG_ARG,"");
+        isUser = bundle.getBoolean(Const.ARG_USER,true);
     }
 
     @Override
@@ -70,7 +66,8 @@ public class TransactionResultFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SearchTask.startSearchTransaction(BethApplication.getContext(),arg);
+        System.out.println(isUser);
+        SearchTask.startSearchTransaction(BethApplication.getContext(),arg,isUser);
         postponeEnterTransition();
         binding.iv.setTransitionName(BaseUtil.getString(R.string.shared_element_search_tx));
         startPostponedEnterTransition();
@@ -130,7 +127,7 @@ public class TransactionResultFragment extends BaseFragment {
 
     public void onRefreshClick(View view){
         viewModel.state.setValue(LoadingState.LODING);
-        SearchTask.startSearchTransaction(BethApplication.getContext(),arg);
+        SearchTask.startSearchTransaction(BethApplication.getContext(),arg, isUser);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.LogUtil;
@@ -16,9 +17,13 @@ import com.chen.beth.ui.RVItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
+
 public class RVTransactionsAdapter extends RecyclerView.Adapter<RVTransactionsViewHolder> {
     private List<TransactionSummaryBean> list;
     private RVItemClickListener listener;
+    private boolean fromBeth = true;
     public RVTransactionsAdapter(){
         list = new ArrayList<>();
     }
@@ -43,9 +48,16 @@ public class RVTransactionsAdapter extends RecyclerView.Adapter<RVTransactionsVi
 
     private TransactionSummaryDataBinding generateData(TransactionSummaryBean bean) {
         TransactionSummaryDataBinding data = new TransactionSummaryDataBinding();
-        data.from = BaseUtil.getString(R.string.tx_from)+" "+BaseUtil.omitMinerString(bean.from,10);
-        data.to =  BaseUtil.getString(R.string.tx_to)+" "+BaseUtil.omitMinerString(bean.to,10);
-        data.value =  BaseUtil.getString(R.string.tx_value)+" "+bean.value;
+        data.from = BaseUtil.getString(R.string.block_result_from)+" : "+BaseUtil.omitMinerString(bean.from,6);
+        data.to =  BaseUtil.getString(R.string.block_result_to)+" : "+BaseUtil.omitMinerString(bean.to,6);
+        String v;
+        if (fromBeth){
+            v = Double.parseDouble(bean.value)==0?"0 Eth":bean.value+" Eth";
+        }else{
+            v = AccountResultFragment.formatBalance(bean.value);
+        }
+
+        data.value =  BaseUtil.getString(R.string.tx_value)+" : "+v;
         return data;
     }
 
@@ -67,7 +79,16 @@ public class RVTransactionsAdapter extends RecyclerView.Adapter<RVTransactionsVi
         notifyItemRangeInserted(oldsize,beans.length);
     }
 
+    public void addData(List<TransactionSummaryBean> list){
+        this.list.addAll(list);
+        notifyItemRangeInserted(this.list.size()-list.size(),this.list.size());
+    }
+
     public TransactionSummaryBean getBean(int pos){
         return list.get(pos);
+    }
+
+    public void setFromEthscan(){
+        fromBeth = false;
     }
 }

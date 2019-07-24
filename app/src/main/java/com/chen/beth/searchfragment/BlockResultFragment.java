@@ -211,21 +211,17 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
 
     @Override
     public void onItemClick(int pos) {
-        Bundle bundle = new Bundle();
-        bundle.putString(Const.ARG_ARG,adapter.getBean(pos).hash);
-        Navigation.findNavController(binding.rvTxs).navigate(R.id.action_blockResulFragment_to_transactionResultFragment,
-                bundle,null,null);
     }
 
     @Override
     public void onItemClick(View view, int pos) {
         View shared = view.findViewById(R.id.iv);
         shared.setTransitionName(BaseUtil.getString(R.string.shared_element_search_tx));
-        System.out.println(shared.getTransitionName());
         FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                 .addSharedElement(shared,shared.getTransitionName())
                 .build();
         Bundle bundle = new Bundle();
+        bundle.putBoolean(Const.ARG_USER,false);
         bundle.putString(Const.ARG_ARG,adapter.getBean(pos).hash);
         Navigation.findNavController(view).navigate(R.id.action_blockResulFragment_to_transactionResultFragment,
                 bundle,null,extras);

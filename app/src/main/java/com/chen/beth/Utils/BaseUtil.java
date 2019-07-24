@@ -39,6 +39,8 @@ public class BaseUtil {
             Context.CONNECTIVITY_SERVICE));
     public static final Typeface BLOCK_NUMBET_TYPEFACE = Typeface.createFromAsset(
             BethApplication.getContext().getAssets(),"fonts/bigfoot.ttf");
+    public static final Typeface ACCOUNT_BALANCE_TYPEFACE = Typeface.createFromAsset(
+            BethApplication.getContext().getAssets(),"fonts/rabiola.otf");
 
 
     public static boolean isRunOnUiThread(){
