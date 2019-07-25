@@ -27,7 +27,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.view.Menu;
 
-public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
+public class MainActivity extends AppCompatActivity  {
     private boolean isShowRefresh = false;
     private int lastDest;
     @Override
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
                 new AppBarConfiguration.Builder(navController.getGraph())
                         .setDrawerLayout(drawer)
                         .build();
-        navController.addOnDestinationChangedListener(this);
+        //navController.addOnDestinationChangedListener(this);
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView,navController );
     }
@@ -86,27 +86,27 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_refresh) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_refresh).setVisible(isShowRefresh);
-        return super.onPrepareOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.action_refresh) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        menu.findItem(R.id.action_refresh).setVisible(isShowRefresh);
+//        return super.onPrepareOptionsMenu(menu);
+//    }
 
     //    @SuppressWarnings("StatementWithEmptyBody")
 //    @Override
@@ -127,16 +127,5 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         stopService(new Intent(this,MainSyncService.class));
     }
 
-    @Override
-    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-        if (destination.getId()==R.id.accountResultFragment){
-            isShowRefresh = true;
-            invalidateOptionsMenu();
-        }else{
-            if (isShowRefresh){
-                isShowRefresh = false;
-                invalidateOptionsMenu();
-            }
-        }
-    }
+
 }

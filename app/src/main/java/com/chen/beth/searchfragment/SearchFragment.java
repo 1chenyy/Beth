@@ -1,25 +1,19 @@
 package com.chen.beth.searchfragment;
 
 
-import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavAction;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,42 +21,33 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 
 import com.chen.beth.BaseFragment;
 import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
-import com.chen.beth.Utils.LogUtil;
-import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.SearchTask;
 import com.chen.beth.databinding.FragmentSearchBinding;
-import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.SearchHistory;
+import com.chen.beth.ui.IPreLoad;
 import com.chen.beth.ui.ItemOffsetDecoration;
+import com.chen.beth.ui.OnScrollListener;
 import com.chen.beth.ui.RVItemClickListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.tencent.mmkv.MMKV;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import io.reactivex.Observable;
-import jp.wasabeef.recyclerview.animators.FadeInAnimator;
-import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment implements RVItemClickListener {
+public class SearchFragment extends BaseFragment implements RVItemClickListener, IPreLoad {
     private FragmentSearchBinding binding;
     private RecyclerView rv;
-    private RVHistoryAdapter adapter;
+    private SearchHistoryAdapter adapter;
     private SearchFragmentDataBinding dataBinding;
+    private OnScrollListener listener;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -87,10 +72,12 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
         rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         rv.setItemAnimator(new DefaultItemAnimator());
         rv.addItemDecoration(new ItemOffsetDecoration());
-        adapter = new RVHistoryAdapter();
+        adapter = new SearchHistoryAdapter();
         adapter.setListener(this);
         rv.setAdapter(adapter);
-
+        listener = new OnScrollListener(5);
+        listener.setOnPreLoad(this);
+        rv.addOnScrollListener(listener);
     }
 
     @Override
@@ -98,7 +85,7 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
         super.onViewCreated(view, savedInstanceState);
         binding.rvHistory.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.alpha_in_anim));
         binding.tvHistory.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.alpha_in_anim));
-        SearchTask.startQueryAllHistory(BethApplication.getContext());
+        SearchTask.startQueryAllHistory(BethApplication.getContext(),0);
     }
 
     public void onCardClick(View view){
@@ -205,10 +192,13 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHistoryEvent(SearchHistory[] event){
+        listener.setEnable(true);
         if (event.length!=0){
             if (adapter.getItemCount()==0){
                 adapter.initList(event);
                 dataBinding.hasHistory.set(true);
+            }else{
+                adapter.addItems(event);
             }
         }else{
             if (adapter.getItemCount() == 0){
@@ -249,5 +239,10 @@ public class SearchFragment extends BaseFragment implements RVItemClickListener 
                 .setNegativeButton(R.string.delete_all_cancel,null)
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onPreLoad() {
+        SearchTask.startQueryAllHistory(BethApplication.getContext(),adapter.getItemCount());
     }
 }

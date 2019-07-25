@@ -21,7 +21,7 @@ public interface SearchHistoryDao {
     @Query("select * from search_history order by id desc")
     SearchHistory[] getAll();
 
-    @Query("select * from search_history limit 10 offset :offset")
+    @Query("select * from search_history order by id desc limit 20 offset :offset")
     SearchHistory[] getOnePage(int offset);
 
     @Query("delete from search_history")

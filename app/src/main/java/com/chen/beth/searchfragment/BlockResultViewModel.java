@@ -24,6 +24,7 @@ public class BlockResultViewModel extends ViewModel {
     public MutableLiveData<String>  gasLimit = new MutableLiveData<>();
     public MutableLiveData<String>  extra = new MutableLiveData<>();
     public MutableLiveData<String>  hash = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isFavorite = new MutableLiveData<>();
 
     public BlockResultViewModel() {
         state.setValue(LoadingState.LODING);

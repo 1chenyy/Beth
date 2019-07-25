@@ -130,5 +130,11 @@
     <string name="account_block">Mined blocks</string>
     <string name="account_transaction">Transactions</string>
     <string name="no_content">No content</string>
+    <string name="account_blocks_item_1">Time:</string>
+    <string name="account_blocks_item_2">Mined:</string>
+    <string name="favorite_all">All</string>
+    <string name="favorite_tx">Transaction</string>
+    <string name="favorite_account">Account</string>
+    <string name="favorite_blocks">Block</string>
 
 </resources>

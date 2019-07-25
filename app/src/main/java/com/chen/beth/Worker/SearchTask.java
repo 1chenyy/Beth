@@ -9,6 +9,7 @@ import com.chen.beth.BethApplication;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.models.AccountBalanceBean;
+import com.chen.beth.models.AccountBlocksBean;
 import com.chen.beth.models.AccountTransactionsBean;
 import com.chen.beth.models.BlockSummaryBean;
 import com.chen.beth.models.OneBlockSummaryBean;
@@ -35,6 +36,7 @@ public class SearchTask extends IntentService {
     private static final String ACTION_QUERY_BLOCK_TRANSACTION = "com.chen.beth.Worker.action.query_block_transaction";
     private static final String ACTION_QUERY_ACCOUNT_BALANCE = "com.chen.beth.Worker.action.query_account_balance";
     private static final String ACTION_QUERY_ACCOUNT_TRANSACTION = "com.chen.beth.Worker.action.query_account_transaction";
+    private static final String ACTION_QUERY_ACCOUNT_BLOCKS = "com.chen.beth.Worker.action.query_account_blocks";
 
     private static final String EXTRA_TX_HASH = "com.chen.beth.Worker.extra.param_tx_hash";
     private static final String EXTRA_BLOCK_NUMBER = "com.chen.beth.Worker.extra.param_block_number";
@@ -75,9 +77,10 @@ public class SearchTask extends IntentService {
         }
     }
 
-    public static void startQueryAllHistory(Context context){
+    public static void startQueryAllHistory(Context context,int page){
         Intent intent = new Intent(context, SearchTask.class);
         intent.setAction(ACTION_QUERY_ALL_HISTORY);
+        intent.putExtra(EXTRA_PAGE,page);
         context.startService(intent);
     }
 
@@ -129,11 +132,27 @@ public class SearchTask extends IntentService {
         }
     }
 
+    private static Disposable queryAccountBlocksDisposable;
+    public static void startQueryAccountBlocks(Context context,String address,int page){
+        Intent intent = new Intent(context,SearchTask.class);
+        intent.setAction(ACTION_QUERY_ACCOUNT_BLOCKS);
+        intent.putExtra(EXTRA_PAGE, page);
+        intent.putExtra(EXTRA_ADDRESS,address);
+        context.startService(intent);
+    }
+    public static void stopQueryAccountBlocks(){
+        if (queryAccountBlocksDisposable!=null && !queryAccountBlocksDisposable.isDisposed()){
+            queryAccountBlocksDisposable.dispose();
+        }
+    }
+
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
+            String address;
+            int page;
             switch (action){
                 case ACTION_SEARCH_TRANSACTION:
                     String hash = intent.getStringExtra(EXTRA_TX_HASH);
@@ -159,8 +178,8 @@ public class SearchTask extends IntentService {
                     }
                     break;
                 case ACTION_QUERY_ALL_HISTORY:
-                    LogUtil.d(this.getClass(),"开始查询所有历史记录");
-                    EventBus.getDefault().post(BethApplication.getDBData().getSearchHistoryDao().getAll());
+                    page = intent.getIntExtra(EXTRA_PAGE,0);
+                    handleQuerySearchHistory(page);
                     break;
                 case ACTION_STORE_TRANSACTION:
                     handleStoreTransaction(intent);
@@ -174,7 +193,7 @@ public class SearchTask extends IntentService {
                     }
                     break;
                 case ACTION_QUERY_ACCOUNT_BALANCE:
-                    String address = intent.getStringExtra(EXTRA_ADDRESS);
+                    address = intent.getStringExtra(EXTRA_ADDRESS);
                     if (!TextUtils.isEmpty(address)){
                         if (intent.getBooleanExtra(EXTRA_IS_USER,false)){
                             saveHistory(Const.TYPE_ACCOUNT,address);
@@ -185,17 +204,58 @@ public class SearchTask extends IntentService {
                     }
                     break;
                 case ACTION_QUERY_ACCOUNT_TRANSACTION:
-                    String add = intent.getStringExtra(EXTRA_ADDRESS);
-                    int page = intent.getIntExtra(EXTRA_PAGE,1);
-                    if (!TextUtils.isEmpty(add)){
-                        handleQueryAccountTransactions(add,page);
+                    address = intent.getStringExtra(EXTRA_ADDRESS);
+                    page = intent.getIntExtra(EXTRA_PAGE,1);
+                    if (!TextUtils.isEmpty(address)){
+                        handleQueryAccountTransactions(address,page);
                     }else{
                         handleQueryAccountTransactionsFailed(new Throwable("empty address"));
+                    }
+                    break;
+                case ACTION_QUERY_ACCOUNT_BLOCKS:
+                    address = intent.getStringExtra(EXTRA_ADDRESS);
+                    page = intent.getIntExtra(EXTRA_PAGE,1);
+                    if (!TextUtils.isEmpty(address)){
+                        handleQueryAccountBlocks(address,page);
+                    }else{
+                        handleQueryAccountBlocksFailed(new Throwable("empty address"));
                     }
                     break;
             }
         }
     }
+
+    private void handleQuerySearchHistory(int offset) {
+        LogUtil.d(this.getClass(),"开始查询所有历史记录,offset="+offset);
+
+        EventBus.getDefault().post(BethApplication.getDBData().getSearchHistoryDao().getOnePage(offset));
+    }
+
+    private void handleQueryAccountBlocks(String address,int page){
+        LogUtil.d(this.getClass(),"开始查询账户"+address+"的第"+page+"页出块记录");
+        queryAccountBlocksDisposable = RetrofitManager.getEtherscanProxyAPIServices()
+                .getAccountBlocks(Const.ETHERSCAN_ACCOUNT_MODULE,
+                        Const.ETHERSCAN_ACCOUNT_ACTION_GETBLOCKS,
+                        address,Const.ETHERSCAN_ACCOUNT_ARG_BLOCK_TYPE,
+                        page, Const.ETHERSCAN_ACCOUNT_ARG_OFFSET)
+                .subscribeOn(Schedulers.io())
+                .subscribe(b->handleQueryAccountBlocksSucceed(b),
+                        t->handleQueryAccountBlocksFailed(t));
+    }
+    private void handleQueryAccountBlocksSucceed(AccountBlocksBean bean){
+        if (bean!=null && bean.result!=null){
+            bean.status = "1";
+            EventBus.getDefault().post(bean);
+        }else{
+            AccountBlocksBean event = new AccountBlocksBean();
+            EventBus.getDefault().post(event);
+        }
+    }
+    private void handleQueryAccountBlocksFailed(Throwable throwable){
+        AccountBlocksBean event = new AccountBlocksBean();
+        EventBus.getDefault().post(event);
+    }
+
 
     private void handleQueryAccountTransactions(String address,int page){
         LogUtil.d(this.getClass(),"开始查询账户"+address+"的第"+page+"页相关交易");

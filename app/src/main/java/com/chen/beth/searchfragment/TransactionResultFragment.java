@@ -23,6 +23,7 @@ import com.chen.beth.Utils.ConvertUtil;
 import com.chen.beth.Worker.SearchTask;
 import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentTransactionResultBinding;
+import com.chen.beth.models.FavoriteBean;
 import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.OneBlockSummaryBean;
@@ -30,6 +31,10 @@ import com.chen.beth.models.TransactionDetailBean;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,11 +71,11 @@ public class TransactionResultFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        System.out.println(isUser);
         SearchTask.startSearchTransaction(BethApplication.getContext(),arg,isUser);
         postponeEnterTransition();
         binding.iv.setTransitionName(BaseUtil.getString(R.string.shared_element_search_tx));
         startPostponedEnterTransition();
+        checkIsFavorite();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -103,6 +108,14 @@ public class TransactionResultFragment extends BaseFragment {
         }else{
             viewModel.state.setValue(LoadingState.LOADING_FAILED);
         }
+    }
+    private Disposable favoriteDisposable;
+    private void checkIsFavorite() {
+        favoriteDisposable = BethApplication.getDBData().getFavoriteDao()
+                .isFavorite(Const.TYPE_TX,arg)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l->viewModel.isFavorite.setValue(l.size()!=0),t->viewModel.isFavorite.setValue(false));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -164,5 +177,25 @@ public class TransactionResultFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         SearchTask.stopSearchTransaction();
+        if (favoriteDisposable!=null && !favoriteDisposable.isDisposed())
+            favoriteDisposable.dispose();
+    }
+
+    public void onLikeClick(View v){
+        boolean newValue = !viewModel.isFavorite.getValue();
+        viewModel.isFavorite.setValue(newValue);
+        if (newValue){
+            favoriteDisposable = BethApplication.getDBData().getFavoriteDao()
+                    .addFavorite(new FavoriteBean(Const.TYPE_TX,arg))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }else{
+            favoriteDisposable = BethApplication.getDBData().getFavoriteDao()
+                    .removeFavorite(Const.TYPE_TX,arg)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }
     }
 }

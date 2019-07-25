@@ -179,7 +179,7 @@ public class BlockChainAndPriceTask extends IntentService {
                 LogUtil.d(this.getClass(), "从" + netStart + "开始从网络取10个区块");
                 Response<MainFragmentBlockBundleBean> response = RetrofitManager.getBethAPIServices().getOnePageBlocks(netStart).execute();
                 if (response.isSuccessful() && response.body() != null && response.body().result != null) {
-                    LogUtil.d(this.getClass(), "从网络取区块成功" + response.body().status);
+                    LogUtil.d(this.getClass(), "从网络取区块成功");
                     MainFragmentBlockBundleBean respBody = BaseUtil.filterBlocks(response.body());
                     if (respBody.result.blocks.size() != 0) {
                         saveData(respBody.result.blocks);

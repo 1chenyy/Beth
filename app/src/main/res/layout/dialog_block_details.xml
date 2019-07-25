@@ -223,7 +223,6 @@
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
-                android:textIsSelectable="true"
                 app:layout_constraintLeft_toRightOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@id/tv_gas_limit_content" />
 

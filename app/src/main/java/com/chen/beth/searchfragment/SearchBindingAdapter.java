@@ -3,8 +3,10 @@ package com.chen.beth.searchfragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -66,18 +68,8 @@ public class SearchBindingAdapter {
     }
 
     @BindingAdapter("showHistoryContent")
-    public static void showHistoryContent(TextView tv,SearchHistoryDataBinding data){
-        switch (data.type){
-            case Const.TYPE_TX:
-                tv.setText(BaseUtil.omitMinerString(data.content,8));
-                break;
-            case Const.TYPE_ACCOUNT:
-                tv.setText(BaseUtil.omitMinerString(data.content,8));
-                break;
-            case Const.TYPE_BLOCK:
-                tv.setText(data.content);
-                break;
-        }
+    public static void showHistoryContent(TextView tv,String conent){
+        tv.setText(BaseUtil.omitMinerString(conent,8));
     }
 
     @BindingAdapter("isShowMark")
@@ -106,6 +98,8 @@ public class SearchBindingAdapter {
             tv.setEnabled(false);
         }
     }
+
+
 
     public static void showMarkDialog(Context context,int id, String hash) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

@@ -17,16 +17,16 @@
             android:icon="@drawable/ic_search_black_24dp"
             android:title="@string/menu_search" />
         <item
-            android:id="@+id/nav_favorite"
+            android:id="@+id/favoriteFragment"
             android:icon="@drawable/ic_favorite_black_24dp"
             android:title="@string/menu_favorite" />
         <item
-            android:id="@+id/nav_setting"
+            android:id="@+id/settingsFragment"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/action_settings" />
     </group>
 
-    <item android:title="@string/menu_more">
+    <item android:title="@string/menu_more" android:visible="false">
         <menu>
             <item
                 android:id="@+id/nav_share"

@@ -2,18 +2,14 @@ package com.chen.beth.searchfragment;
 
 
 import android.os.Bundle;
-import android.transition.Transition;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.SharedElementCallback;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -25,15 +21,14 @@ import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
-import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Worker.SearchTask;
 import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentBlockResultBinding;
 import com.chen.beth.models.BlockSummaryBean;
+import com.chen.beth.models.FavoriteBean;
 import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.OneBlockSummaryBean;
-import com.chen.beth.models.TransactionSummaryBean;
 import com.chen.beth.models.TransactionSummaryBundleBean;
 import com.chen.beth.ui.ItemOffsetDecoration;
 import com.chen.beth.ui.RVItemClickListener;
@@ -45,6 +40,7 @@ import java.text.NumberFormat;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
 
@@ -57,8 +53,9 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
     private BlockResultViewModel viewModel;
     private String arg;
     private RecyclerView rv;
-    private RVTransactionsAdapter adapter;
+    private BlockTransactionsAdapter adapter;
     private static boolean isReload = true;
+    private boolean isUser = true;
 
     public BlockResultFragment() {
         // Required empty public constructor
@@ -68,6 +65,7 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         arg = getArguments().getString(Const.ARG_ARG,"");
+        isUser = getArguments().getBoolean(Const.ARG_USER,true);
     }
 
     @Override
@@ -78,15 +76,18 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
         viewModel = ViewModelProviders.of(this).get(BlockResultViewModel.class);
         binding.setData(viewModel);
         binding.setHandler(this);
-
+        configRecyclerView();
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        configRecyclerView();
-        SearchTask.startSearchBlockByNumber(BethApplication.getContext(),Integer.parseInt(arg),true);
+        SearchTask.startSearchBlockByNumber(BethApplication.getContext(),Integer.parseInt(arg),isUser);
+        postponeEnterTransition();
+        binding.iv.setTransitionName(BaseUtil.getString(R.string.shared_element_result_block));
+        startPostponedEnterTransition();
+        checkIsFavorite();
     }
 
 
@@ -96,7 +97,7 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
         rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         rv.setItemAnimator(new ScaleInTopAnimator());
         rv.addItemDecoration(new ItemOffsetDecoration());
-        adapter = new RVTransactionsAdapter();
+        adapter = new BlockTransactionsAdapter();
         adapter.setListener(this);
         rv.setAdapter(adapter);
         binding.ns.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -176,6 +177,15 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
         viewModel.hash.setValue(BaseUtil.omitHashString(bean.hash,8));
     }
 
+    private Disposable favoriteDisposable;
+    private void checkIsFavorite() {
+        favoriteDisposable = BethApplication.getDBData().getFavoriteDao()
+                .isFavorite(Const.TYPE_BLOCK,arg)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l->viewModel.isFavorite.setValue(l.size()!=0),t->viewModel.isFavorite.setValue(false));
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -225,5 +235,23 @@ public class BlockResultFragment extends BaseFragment implements RVItemClickList
         bundle.putString(Const.ARG_ARG,adapter.getBean(pos).hash);
         Navigation.findNavController(view).navigate(R.id.action_blockResulFragment_to_transactionResultFragment,
                 bundle,null,extras);
+    }
+
+    public void onLikeClick(View v){
+        boolean newValue = !viewModel.isFavorite.getValue();
+        viewModel.isFavorite.setValue(newValue);
+        if (newValue){
+            favoriteDisposable = BethApplication.getDBData().getFavoriteDao()
+                    .addFavorite(new FavoriteBean(Const.TYPE_BLOCK,arg))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }else{
+            favoriteDisposable = BethApplication.getDBData().getFavoriteDao()
+                    .removeFavorite(Const.TYPE_BLOCK,arg)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }
     }
 }

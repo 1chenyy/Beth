@@ -31,7 +31,9 @@ import com.chen.beth.models.BlockChainFragmentBlockBundleBean;
 import com.chen.beth.models.BlockSummaryBean;
 import com.chen.beth.models.MinerMark;
 import com.chen.beth.ui.ColorfulLoading;
+import com.chen.beth.ui.IPreLoad;
 import com.chen.beth.ui.ItemOffsetDecoration;
+import com.chen.beth.ui.OnScrollListener;
 import com.chen.beth.ui.RVItemClickListener;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -41,16 +43,16 @@ import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
 
-public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, RVItemClickListener {
+public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, RVItemClickListener, IPreLoad {
 
 
     private FragmentBlockChainBinding binding;
     private ArrayList<BlockSummaryBean> temp;
     private BlockChainAdapter adapter;
-    private BlockChainOnScrollListener scrollListener;
+    private OnScrollListener scrollListener;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rv;
-    private int high = 0;
+    private int high = 0,low = 0;
 
     public static BlockChainFragment newInstance() {
         return new BlockChainFragment();
@@ -82,9 +84,9 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
         rv = binding.rvBlockChain;
         rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         rv.setItemAnimator(new ScaleInTopAnimator());
-        scrollListener = new BlockChainOnScrollListener(0);
+        scrollListener = new OnScrollListener(5);
+        scrollListener.setOnPreLoad(this);
         rv.addOnScrollListener(scrollListener);
-        //rv.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         rv.addItemDecoration(new ItemOffsetDecoration());
         temp = new ArrayList<>();
         adapter = new BlockChainAdapter(this);
@@ -97,6 +99,7 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
         if (swipeRefreshLayout.isRefreshing()){
             swipeRefreshLayout.setRefreshing(false);
         }
+        scrollListener.setEnable(true);
         if (event.status == Const.RESULT_SUCCESS){
             if (event.result.blocks.size()>0){
                 int max = event.result.blocks.get(0).number;
@@ -109,13 +112,13 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
                 }else{
                     adapter.addTailItems(event.result.blocks);
                     LogUtil.d(this.getClass(),"更新最低区块高度"+min);
-                    scrollListener.setCurrent(min);
+                    low = min;
                 }
 
                 if (high == 0){
                     high = max;
                     LogUtil.d(this.getClass(),"更新最高区块高度"+high);
-                    scrollListener.setCurrent(min);
+                    low = min;
                 }
             }else{
                 adapter.setLoadingState(false);
@@ -138,5 +141,10 @@ public class BlockChainFragment extends BaseFragment implements SwipeRefreshLayo
     @Override
     public void onItemClick(int position) {
         BlockDetails.showBlockDetails(getContext(),adapter.getBlockByPosition(position));
+    }
+
+    @Override
+    public void onPreLoad() {
+        BlockChainAndPriceTask.queryBlocksFromDB(BethApplication.getContext(),low-1);
     }
 }

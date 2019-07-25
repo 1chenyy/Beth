@@ -17,25 +17,25 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
-public class RVHistoryAdapter extends RecyclerView.Adapter<RVHistoryViewHolder> {
+public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryViewHolder> {
     private List<SearchHistory> list;
     private RVItemClickListener listener;
 
-    public RVHistoryAdapter(){
+    public SearchHistoryAdapter(){
         list = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public RVHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RVHistoryViewHolder(RvItemHistoryBinding.inflate(
+    public SearchHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new SearchHistoryViewHolder(RvItemHistoryBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,false
         ),listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RVHistoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchHistoryViewHolder holder, int position) {
         SearchHistory history = list.get(position);
         holder.bind(new SearchHistoryDataBinding(history.type,history.content));
     }
@@ -50,6 +50,13 @@ public class RVHistoryAdapter extends RecyclerView.Adapter<RVHistoryViewHolder> 
             list.add(history);
         }
         notifyDataSetChanged();
+    }
+
+    public void addItems(SearchHistory[] histories){
+        for (SearchHistory history:histories){
+            list.add(history);
+        }
+        notifyItemRangeInserted(list.size()-histories.length,list.size());
     }
 
     public void setListener(RVItemClickListener listener) {

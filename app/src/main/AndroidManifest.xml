@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true">
         <service
             android:name=".Worker.SearchTask"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".Worker.BlockChainAndPriceTask"
             android:exported="false" />
@@ -32,6 +32,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

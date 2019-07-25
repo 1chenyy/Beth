@@ -104,4 +104,10 @@
     <string name="account_block">所挖区块</string>
     <string name="account_transaction">相关交易</string>
     <string name="no_content">暂无相关内容</string>
+    <string name="account_blocks_item_1">在 </string>
+    <string name="account_blocks_item_2">挖到区块 </string>
+    <string name="favorite_all">显示全部</string>
+    <string name="favorite_blocks">仅区块</string>
+    <string name="favorite_tx">仅交易</string>
+    <string name="favorite_account">仅账户</string>
 </resources>

@@ -37,6 +37,17 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="16dp"
+                android:src="@{data.isFavorite?@drawable/ic_like:@drawable/ic_unlike}"
+                android:onClick="@{handler::onLikeClick}"
+                android:background="?android:attr/selectableItemBackground"
+                />
+
             <com.chen.beth.ui.ColorfulLoading
                 android:layout_width="60dp"
                 android:layout_height="60dp"

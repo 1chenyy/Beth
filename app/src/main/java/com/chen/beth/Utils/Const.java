@@ -13,12 +13,15 @@ public class Const {
     public static final String ETHERSCAN_PROXY_ACTION_GETTXS = "eth_getTransactionByHash";
     public static final String ETHERSCAN_ACCOUNT_ACTION_GETBALANCE = "balance";
     public static final String ETHERSCAN_ACCOUNT_ACTION_GETTXS = "txlist";
+    public static final String ETHERSCAN_ACCOUNT_ACTION_GETBLOCKS = "getminedblocks";
 
     public static final String ETHERSCAN_ACCOUNT_ARG_TAG = "latest";
     public static final String ETHERSCAN_ACCOUNT_ARG_STRAT = "0";
     public static final String ETHERSCAN_ACCOUNT_ARG_END = "99999999";
     public static final int ETHERSCAN_ACCOUNT_ARG_OFFSET = 20;
     public static final String ETHERSCAN_ACCOUNT_ARG_SORT = "desc";
+    public static final String ETHERSCAN_ACCOUNT_ARG_BLOCK_TYPE = "blocks";
+
     public static final int RESULT_SUCCESS = 1;
     public static final int RESULT_NO_DATA = 0;
     public static final int RESULT_NO_NET = -1;

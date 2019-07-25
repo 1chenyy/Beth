@@ -1,6 +1,7 @@
 package com.chen.beth.net;
 
 import com.chen.beth.models.AccountBalanceBean;
+import com.chen.beth.models.AccountBlocksBean;
 import com.chen.beth.models.AccountTransactionsBean;
 import com.chen.beth.models.TransactionDetailBean;
 
@@ -29,4 +30,12 @@ public interface EtherscanProxyApiServices {
                                                         @Query("page")int page,
                                                         @Query("offset")int offset,
                                                         @Query("sort")String sort);
+
+    @GET("api")
+    Maybe<AccountBlocksBean> getAccountBlocks(@Query("module")String module,
+                                              @Query("action")String action,
+                                              @Query("address")String address,
+                                              @Query("blocktype")String blocktype,
+                                              @Query("page")int page,
+                                              @Query("offset")int offset);
 }

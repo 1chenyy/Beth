@@ -26,6 +26,7 @@ public class TransactionResultViewModel extends ViewModel  {
     public MutableLiveData<String> r = new MutableLiveData();
     public MutableLiveData<String> s = new MutableLiveData();
     public MutableLiveData<String> v = new MutableLiveData();
+    public MutableLiveData<Boolean> isFavorite = new MutableLiveData<>();
 
     public TransactionResultViewModel(){
         state.setValue(LoadingState.LODING);

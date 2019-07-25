@@ -32,6 +32,40 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="16dp"
+            android:src="@{data.isFavorite?@drawable/ic_like:@drawable/ic_unlike}"
+            android:onClick="@{handler::onLikeClick}"
+            android:background="?android:attr/selectableItemBackground"
+            />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.address}"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:onClick="@{handler::onEditClick}"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintLeft_toRightOf="@id/address"
+            app:layout_constraintTop_toBottomOf="@id/iv"/>
+
         <TextView
             android:id="@+id/balance_title"
             android:layout_width="wrap_content"
@@ -40,7 +74,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/account_balance"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv" />
+            app:layout_constraintTop_toBottomOf="@id/address" />
 
         <TextView
             android:id="@+id/balance_title_content"
@@ -74,10 +108,10 @@
             android:layout_height="0dp"
             android:layout_margin="8dp"
             app:isShowContentView="@{data.state}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinner"/>
+            app:layout_constraintTop_toBottomOf="@id/spinner" />
 
         <com.chen.beth.ui.ColorfulLoading
             android:id="@+id/loading"

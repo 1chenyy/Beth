@@ -1,34 +1,25 @@
-package com.chen.beth.searchfragment;
+package com.chen.beth.ui;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chen.beth.BethApplication;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.models.TransactionSummaryBean;
-import com.chen.beth.models.TransactionSummaryBundleBean;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
-public class AccountOnScrollListener extends RecyclerView.OnScrollListener {
-    private boolean isSlidingUp = false,disable = false;
+public class OnScrollListener extends RecyclerView.OnScrollListener {
+    private boolean isSlidingUp = false, enable = false;
     private int prePos = -1;
-    private int itemCount,lastItemPosition, offest,number;
-    public AccountOnScrollListener(){
-        this.offest = 0;
+    private int itemCount,lastItemPosition, preloadPos;
+    public OnScrollListener(int preloadPos){
+        this.preloadPos = preloadPos;
     }
     @Override
     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-        if (disable){
+        if (!enable){
             return;
         }
         isSlidingUp = dy>0;
@@ -37,8 +28,9 @@ public class AccountOnScrollListener extends RecyclerView.OnScrollListener {
         lastItemPosition = manager.findLastCompletelyVisibleItemPosition();
         if (isSlidingUp && lastItemPosition!=prePos){
             prePos = lastItemPosition;
-            if (lastItemPosition == itemCount-5){
+            if (lastItemPosition == itemCount-preloadPos){
                 LogUtil.d(this.getClass(),"开始预加载");
+                enable = false;
                 preLoad.onPreLoad();
             }
         }
@@ -53,6 +45,10 @@ public class AccountOnScrollListener extends RecyclerView.OnScrollListener {
     private IPreLoad preLoad;
     public void setOnPreLoad(IPreLoad preLoad){
         this.preLoad = preLoad;
+    }
+
+    public void setEnable(boolean b){
+        enable = b;
     }
 
 }

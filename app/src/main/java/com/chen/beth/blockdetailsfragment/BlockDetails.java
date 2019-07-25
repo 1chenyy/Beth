@@ -62,7 +62,7 @@ public class BlockDetails {
                 bean.gaslimit+"",
                 bean.extra,
                 BaseUtil.omitHashString(bean.hash,8));
-
+        binding.tvExtraContent.setSelected(true);
         binding.setData(data);
     }
 

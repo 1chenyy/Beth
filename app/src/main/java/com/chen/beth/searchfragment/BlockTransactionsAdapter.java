@@ -6,10 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chen.beth.BethApplication;
 import com.chen.beth.R;
 import com.chen.beth.Utils.BaseUtil;
-import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.databinding.RvItemTransactionsBinding;
 import com.chen.beth.models.TransactionSummaryBean;
 import com.chen.beth.ui.RVItemClickListener;
@@ -17,28 +15,25 @@ import com.chen.beth.ui.RVItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-
-public class RVTransactionsAdapter extends RecyclerView.Adapter<RVTransactionsViewHolder> {
+public class BlockTransactionsAdapter extends RecyclerView.Adapter<BlockTransactionsViewHolder> {
     private List<TransactionSummaryBean> list;
     private RVItemClickListener listener;
     private boolean fromBeth = true;
-    public RVTransactionsAdapter(){
+    public BlockTransactionsAdapter(){
         list = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public RVTransactionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RVTransactionsViewHolder(
+    public BlockTransactionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new BlockTransactionsViewHolder(
                 RvItemTransactionsBinding.inflate(
                         LayoutInflater.from(parent.getContext()),
                         parent,false),listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RVTransactionsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BlockTransactionsViewHolder holder, int position) {
         holder.bind(generateData(list.get(position)));
     }
 

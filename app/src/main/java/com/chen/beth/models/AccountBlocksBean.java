@@ -2,7 +2,7 @@ package com.chen.beth.models;
 
 import java.util.List;
 
-public class AccountMinedBean {
+public class AccountBlocksBean {
 
     /**
      * status : 1

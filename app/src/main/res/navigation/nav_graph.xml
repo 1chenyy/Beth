@@ -63,6 +63,9 @@
         <action
             android:id="@+id/action_accountResultFragment_to_transactionResultFragment"
             app:destination="@id/transactionResultFragment" />
+        <action
+            android:id="@+id/action_accountResultFragment_to_blockResulFragment"
+            app:destination="@id/blockResulFragment" />
     </fragment>
     <fragment
         android:id="@+id/blockResulFragment"
@@ -73,4 +76,24 @@
             android:id="@+id/action_blockResulFragment_to_transactionResultFragment"
             app:destination="@id/transactionResultFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.chen.beth.favoritefragment.FavoriteFragment"
+        android:label="@string/menu_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_transactionResultFragment"
+            app:destination="@id/transactionResultFragment" />
+        <action
+            android:id="@+id/action_favoriteFragment_to_blockResulFragment"
+            app:destination="@id/blockResulFragment" />
+        <action
+            android:id="@+id/action_favoriteFragment_to_accountResultFragment"
+            app:destination="@id/accountResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.chen.beth.settingsfragment.SettingsFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
