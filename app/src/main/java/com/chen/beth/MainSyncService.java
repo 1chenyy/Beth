@@ -58,6 +58,7 @@ public class MainSyncService extends Service {
         QueryTransactionHistoryTask queryTransactionHistoryTask = new QueryTransactionHistoryTask();
         if (now.equals(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_DATE,"")) &&
                 !TextUtils.isEmpty(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_VALUE,""))){
+            LogUtil.d(this.getClass(),"从缓存加载交易历史");
             List<Integer> number = BaseUtil.StringToIntList(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_VALUE,""));
             HistoryTransactionBean event = new HistoryTransactionBean();
             event.status = 1;
@@ -92,7 +93,6 @@ public class MainSyncService extends Service {
 
 
     private void configForegroundService(){
-
         startForeground(FOREGROUND_SERVICE_ID,
                 notificationHelper.getMainSyncNotification(getString(R.string.main_top_loading),getString(R.string.main_top_loading)));
     }
@@ -134,6 +134,7 @@ public class MainSyncService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        System.out.println("stopForeground");
         stopForeground(true);
         scheduledService.shutdownNow();
         executorService.shutdownNow();

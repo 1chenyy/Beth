@@ -12,8 +12,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.chen.beth.Utils.BaseUtil;
+import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.google.android.material.navigation.NavigationView;
+import com.tencent.mmkv.MMKV;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -39,11 +41,13 @@ public class MainActivity extends AppCompatActivity  {
                 getString(R.string.id_channel_mainsync),
                 getString(R.string.name_block_sync),
                 getString(R.string.name_block_sync_desc));
-
         if (!BaseUtil.isServiceRunning("com.chen.beth.MainSyncService")){
+            System.out.println("startService");
             startService(new Intent(this,MainSyncService.class));
         }
+
     }
+
 
     AppBarConfiguration appBarConfiguration;
     private void initUI() {
@@ -124,7 +128,10 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this,MainSyncService.class));
+        if(!MMKV.defaultMMKV().decodeBool(Const.IS_SHOW_NOTIFY,true) ){
+            stopService(new Intent(this,MainSyncService.class));
+        }
+
     }
 
 

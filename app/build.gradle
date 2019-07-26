@@ -63,4 +63,5 @@ dependencies {
     implementation "org.jsoup:jsoup:1.12.1"
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     implementation 'com.tencent:mmkv:1.0.22'
+    implementation 'androidx.preference:preference:1.0.0'
 }

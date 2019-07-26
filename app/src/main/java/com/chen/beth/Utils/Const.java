@@ -43,4 +43,6 @@ public class Const {
     public static final String ARG_SRC = "src";
     public static final String ARG_ARG = "arg";
     public static final String ARG_USER = "user";
+    public static final String IS_SHOW_NOTIFY = "is_show_notify";
+    public static final String FROM_BROADCAST = "from_broadcast";
 }

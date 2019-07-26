@@ -15,4 +15,7 @@ public interface TransactionDao {
 
     @Query("select * from transactions where hash=:hash")
     TransactionBean[] getTransactionByHash(String hash);
+
+    @Query("delete from transactions")
+    void deleteAll();
 }

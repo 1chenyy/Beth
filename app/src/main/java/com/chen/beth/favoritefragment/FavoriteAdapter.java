@@ -60,4 +60,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
         list.remove(pos);
         notifyItemRemoved(pos);
     }
+
+    public void removeAll(){
+        int size = list.size();
+        list.clear();
+        notifyItemRangeRemoved(0,size);
+    }
 }

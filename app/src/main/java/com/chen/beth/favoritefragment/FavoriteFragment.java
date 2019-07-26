@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,6 +36,7 @@ import com.chen.beth.ui.RVItemClickListener;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -62,6 +64,7 @@ public class FavoriteFragment extends Fragment implements AdapterView.OnItemSele
         binding.setLifecycleOwner(this);
         data = ViewModelProviders.of(this).get(FavoriteFragmentViewModel.class);
         binding.setData(data);
+        binding.setHandler(this);
         return binding.getRoot();
     }
 
@@ -224,10 +227,11 @@ public class FavoriteFragment extends Fragment implements AdapterView.OnItemSele
     public void onDeleteClick(int pos) {
         FavoriteBean bean  = adapter.getBean(pos);
         adapter.removeItem(pos);
+        data.hasFavorite.setValue(adapter.getItemCount()!=0);
         disposable = BethApplication.getDBData().getFavoriteDao()
                 .removeFavorite(bean.type,bean.content)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
 
     }
@@ -237,6 +241,9 @@ public class FavoriteFragment extends Fragment implements AdapterView.OnItemSele
         super.onDestroyView();
         if (disposable!=null && !disposable.isDisposed()){
             disposable.dispose();
+        }
+        if (loadAllDisposable!=null && !loadAllDisposable.isDisposed()){
+            loadAllDisposable.dispose();
         }
     }
 
@@ -256,5 +263,47 @@ public class FavoriteFragment extends Fragment implements AdapterView.OnItemSele
                 loadBlock(adapter.getItemCount());
                 break;
         }
+    }
+
+    public void onDeleteAll(View v){
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_all_favorite_title)
+                .setMessage(R.string.delete_all_favorite)
+                .setPositiveButton(R.string.delete_all_ok,
+                        (d,w)->{deleteAll();})
+                .setNegativeButton(R.string.delete_all_cancel,null)
+                .create()
+                .show();
+
+    }
+    private void deleteAll(){
+        switch (current){
+            case 0:
+                disposable = BethApplication.getDBData().getFavoriteDao().deleteAll()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+                break;
+            case 1:
+                disposable = BethApplication.getDBData().getFavoriteDao().deleteType(Const.TYPE_TX)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+                break;
+            case 2:
+                disposable = BethApplication.getDBData().getFavoriteDao().deleteType(Const.TYPE_ACCOUNT)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+                break;
+            case 3:
+                disposable = BethApplication.getDBData().getFavoriteDao().deleteType(Const.TYPE_BLOCK)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+                break;
+        }
+        adapter.removeAll();
+        data.hasFavorite.setValue(false);
     }
 }

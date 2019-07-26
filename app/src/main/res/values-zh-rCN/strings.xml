@@ -110,4 +110,12 @@
     <string name="favorite_blocks">仅区块</string>
     <string name="favorite_tx">仅交易</string>
     <string name="favorite_account">仅账户</string>
+    <string name="no_favorite">暂无任何收藏</string>
+    <string name="delete_all_favorite_title">删除所有收藏记录</string>
+    <string name="delete_all_favorite">是否要和删除所有收藏记录</string>
+    <string name="setting_clear">清理缓存</string>
+    <string name="setting_backend">通知栏设置</string>
+    <string name="setting_backend_content">程序退出后在通知栏持续显示以太坊最新状态</string>
+    <string name="setting_clear_msg">是否要删除所有缓存</string>
+    <string name="clear_finish">清理结束</string>
 </resources>

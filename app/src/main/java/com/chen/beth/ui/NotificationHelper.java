@@ -10,6 +10,7 @@ import android.util.ArrayMap;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
+import androidx.navigation.NavDeepLinkBuilder;
 
 import com.chen.beth.BethApplication;
 import com.chen.beth.MainActivity;
@@ -47,10 +48,7 @@ public class NotificationHelper {
                 0,
                 new Intent(BethApplication.getContext(), MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent settingIntent = PendingIntent.getBroadcast(BethApplication.getContext(),
-                1,
-                new Intent("aa"),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder builder = getBuilder(BaseUtil.getString(R.string.id_channel_mainsync));
         RemoteViews notificationLayout = new RemoteViews(BethApplication.getContext().getPackageName(),R.layout.notification_main_sync);
 
@@ -76,7 +74,6 @@ public class NotificationHelper {
         }
         notificationLayout.setTextViewText(R.id.tv_price,price);
 
-        notificationLayout.setOnClickPendingIntent(R.id.iv_settings,settingIntent);
         builder.setSmallIcon(R.drawable.ic_menu_blocks)
                 .setContent(notificationLayout)
                 .setContentIntent(mainIntent);

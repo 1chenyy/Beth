@@ -22,7 +22,10 @@ public interface FavoriteDao {
     Maybe<List<FavoriteBean>> isFavorite(int type,String content);
 
     @Query("delete from favorite")
-    int deleteAll();
+    Maybe<Integer> deleteAll();
+
+    @Query("delete from favorite where type=:type")
+    Maybe<Integer> deleteType(int type);
 
     @Delete
     int removeFavorite(FavoriteBean history);

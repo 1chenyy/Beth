@@ -136,5 +136,13 @@
     <string name="favorite_tx">Transaction</string>
     <string name="favorite_account">Account</string>
     <string name="favorite_blocks">Block</string>
+    <string name="no_favorite">No favorite</string>
+    <string name="delete_all_favorite">Whether to delete all favorite records</string>
+    <string name="delete_all_favorite_title">Delete all favorites</string>
+    <string name="setting_clear">Clear all caches</string>
+    <string name="setting_backend">Notification setting</string>
+    <string name="setting_backend_content">It will display the latest status of ethereum continuously in the notification bar</string>
+    <string name="setting_clear_msg">Whether to clean all caches</string>
+    <string name="clear_finish">Clear finish</string>
 
 </resources>

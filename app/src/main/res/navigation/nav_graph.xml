@@ -95,5 +95,9 @@
         android:id="@+id/settingsFragment"
         android:name="com.chen.beth.settingsfragment.SettingsFragment"
         android:label="@string/action_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="http://www.beth.gq/settings" />
+    </fragment>
 </navigation>
