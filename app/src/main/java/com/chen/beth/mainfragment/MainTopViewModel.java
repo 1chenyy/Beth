@@ -34,6 +34,7 @@ public class MainTopViewModel extends ViewModel {
         loadingState.setValue(LoadingState.LODING);
     }
 
+
     public static class Factory implements ViewModelProvider.Factory{
         private Context context;
 

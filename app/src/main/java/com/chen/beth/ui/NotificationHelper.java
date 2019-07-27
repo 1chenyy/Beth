@@ -48,6 +48,9 @@ public class NotificationHelper {
                 0,
                 new Intent(BethApplication.getContext(), MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent settingsIntent = new NavDeepLinkBuilder(BethApplication.getContext())
+                .setGraph(R.navigation.nav_graph).setDestination(R.id.settingsFragment)
+                .createPendingIntent();
 
         NotificationCompat.Builder builder = getBuilder(BaseUtil.getString(R.string.id_channel_mainsync));
         RemoteViews notificationLayout = new RemoteViews(BethApplication.getContext().getPackageName(),R.layout.notification_main_sync);
@@ -73,6 +76,7 @@ public class NotificationHelper {
             olds.put(KEY_PRICE,price);
         }
         notificationLayout.setTextViewText(R.id.tv_price,price);
+        //notificationLayout.setOnClickPendingIntent(R.id.iv_settings,settingsIntent);
 
         builder.setSmallIcon(R.drawable.ic_menu_blocks)
                 .setContent(notificationLayout)

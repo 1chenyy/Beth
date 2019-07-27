@@ -12,7 +12,6 @@ import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.QueryLatestBlockNumberTask;
 import com.chen.beth.Worker.QueryPriceTask;
-import com.chen.beth.Worker.QueryTransactionHistoryTask;
 import com.chen.beth.models.HistoryTransactionBean;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.PriceAndMktcapBean;
@@ -33,7 +32,6 @@ import static com.chen.beth.ui.NotificationHelper.FOREGROUND_SERVICE_ID;
 public class MainSyncService extends Service {
     private NotificationHelper notificationHelper ;
     private ScheduledExecutorService scheduledService;
-    private ExecutorService executorService;
     private Timer periodicLatestBlockTimer;
 
     public MainSyncService() {
@@ -46,30 +44,29 @@ public class MainSyncService extends Service {
         LogUtil.d(this.getClass(),"MainSyncService Start !");
         configForegroundService();
         scheduledService = Executors.newScheduledThreadPool(3);
-        executorService = Executors.newCachedThreadPool();
         startQueryPrice();
         startQueryLatestBlock();
-        startQueryTransactionHistory();
+        //startQueryTransactionHistory();
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void startQueryTransactionHistory() {
-        String now = BaseUtil.getTodayString();
-        QueryTransactionHistoryTask queryTransactionHistoryTask = new QueryTransactionHistoryTask();
-        if (now.equals(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_DATE,"")) &&
-                !TextUtils.isEmpty(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_VALUE,""))){
-            LogUtil.d(this.getClass(),"从缓存加载交易历史");
-            List<Integer> number = BaseUtil.StringToIntList(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_VALUE,""));
-            HistoryTransactionBean event = new HistoryTransactionBean();
-            event.status = 1;
-            event.result = new HistoryTransactionBean.ResultBean();
-            event.result.number = number;
-            BaseUtil.RemoveAndSendStickEvent(event);
-        }else{
-            executorService.execute(queryTransactionHistoryTask);
-        }
-        scheduledService.scheduleAtFixedRate(queryTransactionHistoryTask,BaseUtil.getRemainTime()+1,24*60*60,TimeUnit.SECONDS);
-    }
+//    private void startQueryTransactionHistory() {
+//        String now = BaseUtil.getTodayString();
+//        QueryTransactionHistoryTask queryTransactionHistoryTask = new QueryTransactionHistoryTask();
+//        if (now.equals(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_DATE,"")) &&
+//                !TextUtils.isEmpty(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_VALUE,""))){
+//            LogUtil.d(this.getClass(),"从缓存加载交易历史");
+//            List<Integer> number = BaseUtil.StringToIntList(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_VALUE,""));
+//            HistoryTransactionBean event = new HistoryTransactionBean();
+//            event.status = 1;
+//            event.result = new HistoryTransactionBean.ResultBean();
+//            event.result.number = number;
+//            BaseUtil.RemoveAndSendStickEvent(event);
+//        }else{
+//            executorService.execute(queryTransactionHistoryTask);
+//        }
+//        scheduledService.scheduleAtFixedRate(queryTransactionHistoryTask,BaseUtil.getRemainTime()+1,24*60*60,TimeUnit.SECONDS);
+//    }
 
     private void startQueryLatestBlock() {
         QueryLatestBlockNumberTask queryLatestBlockTask = new QueryLatestBlockNumberTask();
@@ -137,7 +134,6 @@ public class MainSyncService extends Service {
         System.out.println("stopForeground");
         stopForeground(true);
         scheduledService.shutdownNow();
-        executorService.shutdownNow();
         EventBus.getDefault().unregister(this);
     }
 }

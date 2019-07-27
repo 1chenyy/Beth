@@ -5,6 +5,9 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -37,15 +40,38 @@ public class MainFragmentBindAdapter {
     public static void setContent(TextView view, String content){
         if (content.equals(view.getText()))
             return;
-        ValueAnimator contentAnimator = ValueAnimator.ofFloat(1,0,1).setDuration(800);
-        contentAnimator.addUpdateListener(a->{
-            float value = (float) a.getAnimatedValue();
-            if (value < 0.5 && !content.equals(view.getText())){
-                view.setText(content);
-            }
-            view.setAlpha(value);
-        });
-        contentAnimator.start();
+//        Animation in = new AlphaAnimation(0f,1f);
+//        in.setDuration(400);
+//        Animation out = new AlphaAnimation(1.0f, 0.0f);
+//        out.setDuration(400);
+//        view.startAnimation(out);
+//        out.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                view.setText(content);
+//                view.startAnimation(in);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
+        view.setText(content);
+//        ValueAnimator contentAnimator = ValueAnimator.ofFloat(1,0,1).setDuration(800);
+//        contentAnimator.addUpdateListener(a->{
+//            float value = (float) a.getAnimatedValue();
+//            if (value < 0.5 && !content.equals(view.getText())){
+//                view.setText(content);
+//            }
+//            view.setAlpha(value);
+//        });
+//        contentAnimator.start();
 
     }
 

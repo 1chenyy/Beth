@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity  {
                 getString(R.string.id_channel_mainsync),
                 getString(R.string.name_block_sync),
                 getString(R.string.name_block_sync_desc));
+        LogUtil.d(this.getClass(),"onCreate");
         if (!BaseUtil.isServiceRunning("com.chen.beth.MainSyncService")){
             System.out.println("startService");
             startService(new Intent(this,MainSyncService.class));
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtil.d(this.getClass(),"onDestroy");
         if(!MMKV.defaultMMKV().decodeBool(Const.IS_SHOW_NOTIFY,true) ){
             stopService(new Intent(this,MainSyncService.class));
         }

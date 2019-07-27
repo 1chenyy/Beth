@@ -7,6 +7,7 @@ import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.models.LatestBlockBean;
 import com.chen.beth.models.NetState;
 import com.chen.beth.net.RetrofitManager;
+import com.tencent.mmkv.MMKV;
 
 public class QueryLatestBlockNumberTask implements Runnable {
     private static NetState state = NetState.NONE;
@@ -19,8 +20,8 @@ public class QueryLatestBlockNumberTask implements Runnable {
                 new QueryPriceTask().run();
             }
             if (oldState==NetState.DISCONNECTED &&
-                !BaseUtil.getTodayString().equals(PreferenceUtil.getString(Const.KEY_HISTORY_TRANSACTION_DATE,""))){
-                new QueryTransactionHistoryTask().run();
+                !BaseUtil.getTodayString().equals(MMKV.defaultMMKV().decodeString(Const.KEY_HISTORY_TRANSACTION_DATE,""))){
+                QueryHistoryTransactions.startQuery();
             }
         }
 

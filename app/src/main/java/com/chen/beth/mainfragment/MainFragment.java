@@ -1,9 +1,9 @@
 package com.chen.beth.mainfragment;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +12,6 @@ import android.view.animation.RotateAnimation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
@@ -29,6 +27,7 @@ import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.LogUtil;
 import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.QueryBlocksTask;
+import com.chen.beth.Worker.QueryHistoryTransactions;
 import com.chen.beth.blockdetailsfragment.BlockDetails;
 import com.chen.beth.databinding.FragmentMainBinding;
 import com.chen.beth.models.MainFragmentBlockBundleBean;
@@ -43,11 +42,13 @@ import com.chen.beth.ui.TransactionAndPriceMarker;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.tencent.mmkv.MMKV;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.ScaleInTopAnimator;
 
@@ -71,13 +72,31 @@ public class MainFragment extends BaseFragment implements RVItemClickListener {
         binding.setHandler(this);
         configChart();
         configRecycleView();
+        LogUtil.d(this.getClass(),"onCreateView");
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        LogUtil.d(this.getClass(),"onViewCreated");
         QueryBlocksTask.startActionQueryLatest15Blocks(BethApplication.getContext());
+        queryHistoryTransactions();
+    }
+
+    private void queryHistoryTransactions() {
+        MMKV mmkv = MMKV.defaultMMKV();
+        String now = BaseUtil.getTodayString();
+        String vaule = mmkv.decodeString(Const.KEY_HISTORY_TRANSACTION_VALUE,"");
+        if (now.equals(mmkv.decodeString(Const.KEY_HISTORY_TRANSACTION_DATE,""))
+            && !TextUtils.isEmpty(vaule)){
+            LogUtil.d(this.getClass(),"从缓存加载交易历史");
+            List<Integer> number = BaseUtil.StringToIntList(vaule);
+            viewModel.txHistory.setValue(number);
+        }else{
+            LogUtil.d(this.getClass(),"从网络加载交易历史");
+            QueryHistoryTransactions.startQuery();
+        }
     }
 
     private void configRecycleView() {
@@ -217,13 +236,17 @@ public class MainFragment extends BaseFragment implements RVItemClickListener {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTransactionHistoryEvent(HistoryTransactionBean bean){
         switch (bean.status){
             case Const.RESULT_SUCCESS:
                 viewModel.txHistory.setValue(bean.result.number);
-                PreferenceUtil.putString(Const.KEY_HISTORY_TRANSACTION_DATE, BaseUtil.getTodayString());
-                PreferenceUtil.putString(Const.KEY_HISTORY_TRANSACTION_VALUE,BaseUtil.IntListToString(bean.result.number));
+                MMKV mmkv = MMKV.defaultMMKV();
+                mmkv.encode(Const.KEY_HISTORY_TRANSACTION_DATE, BaseUtil.getTodayString());
+                mmkv.encode(Const.KEY_HISTORY_TRANSACTION_VALUE,BaseUtil.IntListToString(bean.result.number));
+                break;
+            default:
+                LogUtil.d(this.getClass(),"暂无数据"+bean.status);
                 break;
         }
 
