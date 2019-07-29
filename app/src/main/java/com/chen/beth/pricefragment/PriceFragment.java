@@ -56,6 +56,12 @@ public class PriceFragment extends BaseFragment {
         queryHistoryPrice();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BlockChainAndPriceTask.stopQueryHistoryPrice();
+    }
+
     private void queryHistoryPrice() {
         if (BaseUtil.getTodayString().equals(PreferenceUtil.getString(Const.KEY_HISTORY_PRICE_DATE,""))){
             List<Float> list = BaseUtil.StringToFloatList(PreferenceUtil.getString(Const.KEY_HISTORY_PRICE_VALUE,""));

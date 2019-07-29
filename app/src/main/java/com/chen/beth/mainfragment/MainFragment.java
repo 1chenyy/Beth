@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +40,7 @@ import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.MinerMark;
 import com.chen.beth.models.PriceAndMktcapBean;
 import com.chen.beth.ui.RVItemClickListener;
+import com.chen.beth.ui.TopViewFactory;
 import com.chen.beth.ui.TransactionAndPriceMarker;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -70,6 +73,10 @@ public class MainFragment extends BaseFragment implements RVItemClickListener {
         binding.setLifecycleOwner(this);
         binding.setViewmodel(viewModel);
         binding.setHandler(this);
+        binding.mainTop.tvLatestContent.setFactory(new TopViewFactory(getContext()));
+        binding.mainTop.tvPriceContent.setFactory(new TopViewFactory(getContext()));
+        binding.mainTop.tvDifficultyContent.setFactory(new TopViewFactory(getContext()));
+        binding.mainTop.tvMktcapContent.setFactory(new TopViewFactory(getContext()));
         configChart();
         configRecycleView();
         LogUtil.d(this.getClass(),"onCreateView");
@@ -141,7 +148,7 @@ public class MainFragment extends BaseFragment implements RVItemClickListener {
         marker.setChartView(chart);
         chart.setMarker(marker);
         chart.animateX(1000);
-        chart.invalidate();
+        //chart.invalidate();
     }
 
 

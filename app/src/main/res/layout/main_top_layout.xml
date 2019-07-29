@@ -36,7 +36,7 @@
                 android:layout_toRightOf="@id/iv_price"
                 android:text="@string/main_top_eth_price_title" />
 
-            <TextView
+            <TextSwitcher
                 android:id="@+id/tv_price_content"
                 style="@style/MainTopViewContentTextViewStyle"
                 android:layout_below="@id/tv_price_title"
@@ -71,7 +71,7 @@
                 android:layout_toRightOf="@id/iv_mktcap"
                 android:text="@string/main_top_eth_market_title" />
 
-            <TextView
+            <TextSwitcher
                 android:id="@+id/tv_mktcap_content"
                 style="@style/MainTopViewContentTextViewStyle"
                 android:layout_below="@id/tv_mktcap_title"
@@ -105,7 +105,7 @@
                 android:layout_toRightOf="@id/iv_latest"
                 android:text="@string/main_top_latest_block_title" />
 
-            <TextView
+            <TextSwitcher
                 android:id="@+id/tv_latest_content"
                 style="@style/MainTopViewContentTextViewStyle"
                 android:layout_below="@id/tv_latest_title"
@@ -139,7 +139,7 @@
                 android:layout_toRightOf="@id/iv_difficulty"
                 android:text="@string/main_top_difficulty_title" />
 
-            <TextView
+            <TextSwitcher
                 android:id="@+id/tv_difficulty_content"
                 style="@style/MainTopViewContentTextViewStyle"
                 android:layout_below="@id/tv_difficulty_title"

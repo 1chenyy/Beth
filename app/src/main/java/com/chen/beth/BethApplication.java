@@ -10,7 +10,6 @@ import com.chen.beth.db.DBData;
 import com.facebook.stetho.Stetho;
 import com.tencent.mmkv.MMKV;
 
-import leakcanary.LeakCanary;
 
 public class BethApplication extends Application {
     private static Context context;

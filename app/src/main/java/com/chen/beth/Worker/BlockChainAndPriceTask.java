@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 /**
@@ -47,18 +49,25 @@ public class BlockChainAndPriceTask extends IntentService {
         super("BlockChainAndPriceTask");
     }
 
-
+    private static Disposable queryHistoryPriceDispose;
     public static void queryHistoryPrice(Context context) {
         Intent intent = new Intent(context, BlockChainAndPriceTask.class);
         intent.setAction(ACTION_QUERY_HISTORY_PRICE);
         context.startService(intent);
     }
+    public static void stopQueryHistoryPrice(){
+        if (queryHistoryPriceDispose!=null&&!queryHistoryPriceDispose.isDisposed()){
+            queryHistoryPriceDispose.dispose();
+        }
+    }
+
 
     public static void queryEthMktcap(Context context) {
         Intent intent = new Intent(context, BlockChainAndPriceTask.class);
         intent.setAction(ACTION_QUERY_ETH_MKTCAP);
         context.startService(intent);
     }
+
 
     public static void queryBlocksFromDB(Context context, int start) {
         Intent intent = new Intent(context, BlockChainAndPriceTask.class);
@@ -242,12 +251,15 @@ public class BlockChainAndPriceTask extends IntentService {
         return original.replace(",", "").split(" ")[0];
     }
 
+
     private void handleQueryHistoryPrice() {
         LogUtil.d(this.getClass(), "开始查询历史价格");
-        RetrofitManager.getBethAPIServices().getHistoryPrice()
+        queryHistoryPriceDispose = RetrofitManager.getBethAPIServices().getHistoryPrice()
+                .subscribeOn(Schedulers.io())
                 .subscribe(b -> handleSucceed(b),
                         t -> handleHistoryPriceFailed(t));
     }
+
 
     private void handleSucceed(HistoryPriceBean bean) {
         HistoryPriceBean event = new HistoryPriceBean();

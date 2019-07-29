@@ -18,6 +18,7 @@ import com.chen.beth.Utils.BaseUtil;
 import com.chen.beth.Utils.Const;
 import com.chen.beth.Utils.PreferenceUtil;
 import com.chen.beth.Worker.BlockChainAndPriceTask;
+import com.chen.beth.Worker.QueryMktcapTask;
 import com.chen.beth.databinding.FragmentMktcapBinding;
 import com.chen.beth.models.LoadingState;
 import com.chen.beth.models.MktcapDetailBean;
@@ -52,6 +53,12 @@ public class MktcapFragment extends BaseFragment {
         binding.setHandler(this);
         configChart();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 
     private void configChart() {
@@ -90,12 +97,12 @@ public class MktcapFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (Calendar.getInstance().getTimeInMillis() > 60*60*1000 + PreferenceUtil.getLong(Const.KEY_MKTCAP_DATE,0)){
-            BlockChainAndPriceTask.queryEthMktcap(BethApplication.getContext());
+            QueryMktcapTask.startQueryMktcap();
         }else if(!TextUtils.isEmpty(PreferenceUtil.getString(Const.KEY_MKTCAP_VALUE,""))){
             List<Double> list = BaseUtil.StringToDoubleList(PreferenceUtil.getString(Const.KEY_MKTCAP_VALUE,""));
             setupViewModel(list);
         }else{
-            BlockChainAndPriceTask.queryEthMktcap(BethApplication.getContext());
+            QueryMktcapTask.startQueryMktcap();
         }
     }
 
