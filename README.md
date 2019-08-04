@@ -1,5 +1,6 @@
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/app/src/main/res/drawable-nodpi/ethereum.png)
 # Beth
-一款以太坊浏览器app，基本功能如下
+一款以太坊浏览器app，使用Jetpack组件开发，基本功能如下
 
 - 实时显示以太币价格、以太坊市值、区块链高度、区块难度以及最近15天以太坊全网交易统计等信息
 - 显示最近15天以太币价格趋势
@@ -20,4 +21,16 @@
 - ....
 
 ## 应用预览图
-![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth%20(1).jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth1.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth2.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth3.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth4.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth5.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth6.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth7.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth8.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth9.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth10.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth11.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth12.jpg)
+![](https://raw.githubusercontent.com/chenyaoyang/Beth/master/screenshots/beth13.jpg)
