@@ -293,11 +293,11 @@ public class MainFragment extends BaseFragment implements RVItemClickListener {
         rotateAnimation.setRepeatCount(Animation.INFINITE);
         view.startAnimation(rotateAnimation);
         view.setEnabled(false);
-        BaseUtil.showToast("bbb");
     }
 
     public void onClickMainBT(View view,LoadingState state){
         if (state == LoadingState.LOADING_FAILED){
+            viewModel.loadingState.setValue(LoadingState.LODING);
             QueryBlocksTask.startActionQueryLatest15Blocks(BethApplication.getContext());
         }else if (state == LoadingState.LOADING_SUCCEED){
             Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_blockChainFragment);
